@@ -34,7 +34,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
 
 
     String pass;
-    // User use;
+    User use;
     String username;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
     static boolean refresh = false;
