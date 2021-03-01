@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "483637886307",
+    "firebase_url": "https://redbird-password-manger-default-rtdb.firebaseio.com",
+    "project_id": "redbird-password-manger",
+    "storage_bucket": "redbird-password-manger.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483637886307:android:88a5f1dc5268046ec02756",
+        "android_client_info": {
+          "package_name": "com.example.redbird"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "483637886307-9qc37ccsttahrt6niqbjb9acqekmeb6s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.redbird",
+            "certificate_hash": "5bd633fb0990fb801fa558478dfcc12e522c95c6"
+          }
+        },
+        {
+          "client_id": "483637886307-u9225dfit0jb1nu07sq4h7j09qlb0ot0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCph55O7ZgOXMo8v9vfb762G6eXXMoJNTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "483637886307-u9225dfit0jb1nu07sq4h7j09qlb0ot0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
