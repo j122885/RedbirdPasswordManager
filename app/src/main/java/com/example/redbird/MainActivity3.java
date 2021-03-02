@@ -129,7 +129,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
 
     //Intent for the listview(makes any listitem "clickable"
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 10000) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 100) {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
@@ -168,7 +168,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
         switch (item.getItemId()) {
 
             case R.id.back:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 100) {
                     break;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
@@ -184,7 +184,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                 break;
 
             case R.id.add:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 100) {
                     break;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();

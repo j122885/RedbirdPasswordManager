@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 import javax.crypto.spec.SecretKeySpec;
 
-
+//v1.0
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;

@@ -81,7 +81,7 @@ public class MainActivity4 extends AppCompatActivity {
     }
 
     public void submit(View view) {
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 100000) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
@@ -101,7 +101,7 @@ public class MainActivity4 extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (shouldAllowBack()) {
-            if (SystemClock.elapsedRealtime() - rLastClickTime < 1000000) {
+            if (SystemClock.elapsedRealtime() - rLastClickTime < 1000) {
                 return;
             }
             rLastClickTime = SystemClock.elapsedRealtime();
@@ -112,7 +112,7 @@ public class MainActivity4 extends AppCompatActivity {
 
     public void back(View view) {
         if (shouldAllowBack()) {
-            if (SystemClock.elapsedRealtime() - rLastClickTime < 1000000) {
+            if (SystemClock.elapsedRealtime() - rLastClickTime < 1000) {
                 return;
             }
             rLastClickTime = SystemClock.elapsedRealtime();
