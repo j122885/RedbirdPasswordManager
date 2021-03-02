@@ -32,14 +32,11 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity2_main);
 
 
-
         Intent intent = getIntent(); //get the intent
         username = intent.getStringExtra("username");
         pass = intent.getStringExtra("pass");
         website = intent.getStringExtra("website");
         websiteUserName = intent.getStringExtra("user");//for the specific list item you click on
-
-
 
 
         tv = findViewById(R.id.website);
@@ -51,8 +48,6 @@ public class MainActivity2 extends AppCompatActivity {
         tv1.setText(websiteUserName);
         tv2.setText(pass);
     }
-
-
 
 
     public void delete(View view) throws IOException {

@@ -13,17 +13,19 @@ public class FireBaseDB {
     private FirebaseAuth mAuth;
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
-    public FireBaseDB(){
+
+    public FireBaseDB() {
 
     }
-    public FireBaseDB(String website, String userName, String password){
+
+    public FireBaseDB(String website, String userName, String password) {
         this.website = website;
         this.userName = userName;
         this.password = password;
         System.out.print("New entry created ");
     }
 
-    public void createNewWebsitePassword(){
+    public void createNewWebsitePassword() {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         mDatabase.child("users").child(user.getEmail().replace(".", "-")).child("storedPasswords").child("websites").child(website.replace(".", "-"));
@@ -32,9 +34,6 @@ public class FireBaseDB {
         mDatabase.child("users").child(user.getEmail().replace(".", "-")).child("storedPasswords").child("websites").child(website.replace(".", "-")).child("password").setValue(password);
         System.out.println("Entry added to db");
     }
-
-
-
 
 
 }

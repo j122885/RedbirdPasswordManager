@@ -8,8 +8,7 @@ public class User implements Serializable {
     String username; //Username
 
 
-    public User (String website, String username, String uPass)
-    {
+    public User(String website, String username, String uPass) {
         this.website = website;
         this.username = username;
         this.uPass = uPass;
@@ -18,7 +17,7 @@ public class User implements Serializable {
     }
 
     public String toString() {
-        return website + " " + username + " "  + uPass + " ";
+        return website + " " + username + " " + uPass + " ";
     }
 
     public String getuPass() {
@@ -44,7 +43,6 @@ public class User implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
-
 
 
 }

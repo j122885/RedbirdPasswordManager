@@ -14,14 +14,16 @@ public class SignIn {
     private String user;
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
-    public SignIn(){
+
+    public SignIn() {
 
     }
-    public SignIn(String user){
+
+    public SignIn(String user) {
         this.user = user;
     }
 
-    public void createNewWebsitePassword(){
+    public void createNewWebsitePassword() {
 
         mDatabase.child(user);
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -41,12 +43,7 @@ public class SignIn {
         });
 
 
-
     }
-
-
-
-
 
 
 }

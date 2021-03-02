@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity3 extends AppCompatActivity implements AdapterView.OnItemClickListener  {
-    ArrayList<User> users  = new ArrayList<User>();
+public class MainActivity3 extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    ArrayList<User> users = new ArrayList<User>();
 
 
     String pass;
@@ -63,7 +63,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
 
                 for (DataSnapshot it : children) {
                     DataSnapshot i = it;
-                    String website =  i.child("website").getValue().toString();
+                    String website = i.child("website").getValue().toString();
                     String username = i.child("userName").getValue().toString();
                     String password = i.child("password").getValue().toString();
                     User user = new User(website, username, password);
@@ -80,7 +80,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                 // nameAddresses.put("www.Amazon.com", "pass123");
 
                 for (User i : users) {
-                    nameAddresses.put(i.website, i.username );//correct this?
+                    nameAddresses.put(i.website, i.username);//correct this?
 
                 }
 
@@ -127,25 +127,24 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
     }
 
 
-
-
     //Intent for the listview(makes any listitem "clickable"
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 10000) {
             return;
-        }  mLastClickTime = SystemClock.elapsedRealtime();
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
 
 
         System.out.println("Is this working");
-        System.out.println( listItems.get(0).get("First Line"));
+        System.out.println(listItems.get(0).get("First Line"));
         // Then you start a new Activity via Intent
         Intent intent = new Intent(this, MainActivity2.class);
 
         intent.putExtra("website", listItems.get(position).get("First Line"));
         intent.putExtra("user", listItems.get(position).get("Second Line")); //listime username
         intent.putExtra("username", username); //account user name
-        for(User u: users){
-            if(u.website.equals(listItems.get(position).get("First Line"))){
+        for (User u : users) {
+            if (u.website.equals(listItems.get(position).get("First Line"))) {
                 pass = u.uPass;
             }
         }
@@ -170,23 +169,25 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
 
             case R.id.back:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                        break;
-                }  mLastClickTime = SystemClock.elapsedRealtime();
+                    break;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
-                    try {
-                        //TransitionActivity.setAlreadyWentToPasswords(true);
-                        submit();
+                try {
+                    //TransitionActivity.setAlreadyWentToPasswords(true);
+                    submit();
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 break;
 
             case R.id.add:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     break;
-                }  mLastClickTime = SystemClock.elapsedRealtime();
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 msg = "Add";
 
@@ -197,7 +198,8 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
         Toast.makeText(MainActivity3.this, msg + "  Checked", Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
     }
-    public void create(){
+
+    public void create() {
         Intent intent = new Intent(this, MainActivity4.class);
         intent.putExtra("account", users);
         intent.putExtra("username", username);
@@ -210,33 +212,34 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
     public void submit() throws Exception {
 
 
-
-        Intent intent = new Intent(this,TransitionActivity.class);
+        Intent intent = new Intent(this, TransitionActivity.class);
         intent.putExtra("username", username);
-       // intent.putExtra("pass", pass);
+        // intent.putExtra("pass", pass);
         startActivity(intent);
     }
+
     private boolean shouldAllowBack() {
-        return  false;
+        return false;
     }
+
     @Override
     public void onBackPressed() {
         if (shouldAllowBack()) {
             super.onBackPressed();
         } else {
-            if (SystemClock.elapsedRealtime() - rLastClickTime < .01){
+            if (SystemClock.elapsedRealtime() - rLastClickTime < .01) {
                 return;
-            }    rLastClickTime = SystemClock.elapsedRealtime();
+            }
+            rLastClickTime = SystemClock.elapsedRealtime();
 
             try {
-               // TransitionActivity.setAlreadyWentToPasswords(true);
+                // TransitionActivity.setAlreadyWentToPasswords(true);
                 submit();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
 
 
 //             Intent intent  = new Intent(this, TransitionActivity.class);

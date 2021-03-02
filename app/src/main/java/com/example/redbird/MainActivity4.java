@@ -27,7 +27,7 @@ public class MainActivity4 extends AppCompatActivity {
         setContentView(R.layout.activity4_main);
 
         Intent intent = getIntent();
-          use = intent.getStringExtra("username");
+        use = intent.getStringExtra("username");
         inputUrl = (EditText) findViewById(R.id.website);
         inputId = (EditText) findViewById(R.id.username);
         inputUPass = (EditText) findViewById(R.id.uPass);
@@ -44,20 +44,21 @@ public class MainActivity4 extends AppCompatActivity {
         String theUPass = inputUPass.getText().toString();
 
 
-        if(ifEmpty(theUrl, theId, theUPass) == false) {
+        if (ifEmpty(theUrl, theId, theUPass) == false) {
             FireBaseDB entry = new FireBaseDB(theUrl, theId, theUPass);
-           entry.createNewWebsitePassword();
+            entry.createNewWebsitePassword();
             User test = new User(theUrl, theId, theUPass);
-           // list.add(test);
+            // list.add(test);
             submit(view);
         } else
             error.setVisibility(View.VISIBLE);
     }
-    public boolean ifEmpty(String url, String id, String pass){
-        if(url.isEmpty() || url.contains(" ") ||id.isEmpty() || id.contains(" ") || pass.isEmpty() || pass.contains(" ") ){ //you need to change this so that it also rejects it if it only has whitespace(spaces)
-            return  true;
-        }else
-        return false;
+
+    public boolean ifEmpty(String url, String id, String pass) {
+        if (url.isEmpty() || url.contains(" ") || id.isEmpty() || id.contains(" ") || pass.isEmpty() || pass.contains(" ")) { //you need to change this so that it also rejects it if it only has whitespace(spaces)
+            return true;
+        } else
+            return false;
     }
 
 
@@ -84,8 +85,6 @@ public class MainActivity4 extends AppCompatActivity {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-
-
 
 
         Intent intent = new Intent(this, MainActivity3.class);

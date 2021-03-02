@@ -83,7 +83,7 @@
         android:layout_marginTop="112dp"
         android:editable="true"
         android:ems="10"
-        android:hint="Username"
+        android:hint="Email"
         android:inputType="textPersonName"
         android:shadowColor="#FFFFFF"
         android:singleLine="false"
@@ -171,24 +171,29 @@
 
     <TextView
         android:id="@+id/errorMessage"
-        android:layout_width="239dp"
-        android:layout_height="21dp"
+        android:layout_width="259dp"
+        android:layout_height="29dp"
         android:layout_marginTop="270dp"
+        android:text="Account already exists"
         android:textColor="#CA1010"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/rUser"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.66"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.852" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/passwordError"
-        android:layout_width="243dp"
-        android:layout_height="19dp"
+        android:layout_width="247dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="24dp"
+        android:text="Password failed verification"
         android:textColor="#FD0000"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintHorizontal_bias="0.603"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rUser" />
 
@@ -208,7 +213,6 @@
         android:id="@+id/rPass"
         android:layout_width="213dp"
         android:layout_height="61dp"
-        android:layout_marginTop="96dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -216,17 +220,18 @@
         android:textColorHint="#FAFAFA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rUser"
+        app:layout_constraintTop_toBottomOf="@+id/passwordError"
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="213dp"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerButton" />
+        app:layout_constraintTop_toBottomOf="@+id/registerButton"
+        app:layout_constraintVertical_bias="0.26" />
 </androidx.constraintlayout.widget.ConstraintLayout>

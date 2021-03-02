@@ -47,21 +47,20 @@ public class TransitionActivity extends AppCompatActivity {
     }
 
 
-
     public void logout(View view) throws Exception {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 100000) {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
 
-//        MainActivity.mGoogleSignInClient.signOut()
-//                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        // ...
-//                    }
-//                });
-       MainActivity.mGoogleSignInClient.revokeAccess()
+        MainActivity.mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                    }
+                });
+        MainActivity.mGoogleSignInClient.revokeAccess()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -69,16 +68,7 @@ public class TransitionActivity extends AppCompatActivity {
                     }
                 });
 
-
-
         FirebaseAuth.getInstance().signOut();
-
-
-
-
-
-
-
 
 
         Intent intent = new Intent(this, MainActivity.class);
