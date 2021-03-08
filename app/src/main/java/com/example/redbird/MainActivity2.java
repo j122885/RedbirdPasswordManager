@@ -1,10 +1,14 @@
 package com.example.redbird;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -61,6 +65,35 @@ public class MainActivity2 extends AppCompatActivity {
         intent.putExtra("username", username);
         startActivity(intent);
 
+    }
+
+    public void copyUsername(View view){
+        // Gets a handle to the clipboard service.
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        // Creates a new text clip to put on the clipboard
+        ClipData clip = ClipData.newPlainText("Username copied to clipboard", websiteUserName);
+        clipboard.setPrimaryClip(clip);
+
+        //alerts user that username text has been copied
+        Context context = getApplicationContext();
+        CharSequence text = clip.getDescription().getLabel();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+    public void copyPassword(View view){
+        // Gets a handle to the clipboard service.
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        // Creates a new text clip to put on the clipboard
+        ClipData clip = ClipData.newPlainText("Password copied to clipboard", pass);
+        clipboard.setPrimaryClip(clip);
+
+        //alerts user that password text has been copied
+        Context context = getApplicationContext();
+        CharSequence text = clip.getDescription().getLabel();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
     private boolean shouldAllowBack() {

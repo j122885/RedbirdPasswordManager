@@ -7,19 +7,16 @@
     android:layout_height="match_parent">
 
 
-
-
-
     <TextView
         android:id="@+id/text1"
 
         android:layout_width="match_parent"
 
-        android:layout_height="wrap_content"
+        android:layout_height="26dp"
 
         android:textColor="#fdf5f5"
 
-        android:textSize="21sp"
+        android:textSize="24sp"
 
         android:textStyle="bold" />
 
@@ -40,11 +37,8 @@
 
         android:textColor="#fdf5f5"
 
-        android:textSize="16sp"
-
-        android:textStyle="bold"
-
-        />
+        android:textSize="18sp"
+        android:textStyle="normal" />
 
 
 

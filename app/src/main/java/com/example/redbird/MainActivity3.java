@@ -242,11 +242,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
     }
 
 
-//             Intent intent  = new Intent(this, TransitionActivity.class);
 
-//               User u = lists.get(0);//get the user from the array
-//            intent.putExtra("account",  lists);//put the arraylist into a putExtra
-//            intent.putExtra("object", (Serializable) u);//put the user into an extra - you need Serializable
 
 }
 
