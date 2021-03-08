@@ -12,7 +12,7 @@
 
         android:layout_width="match_parent"
 
-        android:layout_height="26dp"
+        android:layout_height="40dp"
 
         android:textColor="#fdf5f5"
 
