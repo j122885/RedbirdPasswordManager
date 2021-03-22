@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.crypto.spec.SecretKeySpec;
 
@@ -46,11 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button registerButton;
     Button loginButton;
     Context context;
-    File directory;
-    File accountRepo;
-    File user;
     String personEmail;
-    String personId;
     private long mLastClickTime = 0;
     private long rLastClickTime = 0;
     private static SecretKeySpec skeySpec;
@@ -79,15 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         passwordError.setVisibility(View.INVISIBLE);
         //Internal File storage
         context = getApplicationContext();
-        directory = context.getFilesDir();//the root directory (files)
-        System.out.println(directory); ///data/user/0/com.example.redbirdpasswordmanager/files
-        accountRepo = new File(directory, "Account");//Create Account directory
-        if (!accountRepo.exists()) { //checks if it exits or not
-            if (accountRepo.mkdir()) { //creates it if it does not
-
-            }
-        }
-        System.out.println(context.getDir("Account", 0));//Test to see if Account dir was created
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -235,32 +224,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String username = rUser.getText().toString();//gets username from Edit text
         String password = rPass.getText().toString();//gets passworkd from Edit text
         if (!username.isEmpty()) {
-            System.out.println("Username field is empty");
-            if (minimumPassword(password)) {
+            if (validEmail(username)) {
+                if (minimumPassword(password)) {
 
-                mAuth.createUserWithEmailAndPassword(username, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "createUserWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    updateUI(user);
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-                                    //  updateUI(null);
+                    mAuth.createUserWithEmailAndPassword(username, password)
+                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "createUserWithEmail:success");
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        updateUI(user);
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                        Context context = getApplicationContext();
+
+                                        Toast.makeText(context, "The email address is already in use by another account.",
+                                                Toast.LENGTH_SHORT).show();
+
+                                    }
                                 }
-
-
-                            }
-                        });
+                            });
+                } else {
+                    passwordError.setVisibility(View.VISIBLE);
+                }
             } else {
-                passwordError.setVisibility(View.VISIBLE);
+                Context context = getApplicationContext();
+                Toast.makeText(context, "Invalid Email format",
+                        Toast.LENGTH_SHORT).show();
             }
+        } else {
+            System.out.println("Username field is empty");
+
         }
     }
 
@@ -271,28 +268,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String password = rPass.getText().toString();//gets passworkd from Edit text
         String username = rUser.getText().toString();//gets username from Edit text
 
+        if (password.isEmpty() || username.isEmpty()) {
 
-        mAuth.signInWithEmailAndPassword(username, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-//                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
+        } else {
+            mAuth.signInWithEmailAndPassword(username, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUI(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Context context = getApplicationContext();
+
+                                Toast.makeText(context, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+
+                            }
 
                         }
-
-
-                    }
-                });
+                    });
+        }
 
     }
 
@@ -325,6 +325,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    public boolean validEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
+    }
+
+    public void resetPassword(View view) {
+        Intent intent = new Intent(this, PasswordResetActivity.class);
+        startActivity(intent);
+    }
 
     private boolean shouldAllowBack() {
         return false;

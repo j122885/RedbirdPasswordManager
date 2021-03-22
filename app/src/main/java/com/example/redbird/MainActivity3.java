@@ -59,46 +59,69 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Iterable<DataSnapshot> children = snapshot.getChildren();
+                String website = null;
+                String username = null;
+                String password = null;
 
+                //if (isNotNull(children)==true) {
+                    for (DataSnapshot it : children) {
+                        DataSnapshot i = it;
+                        try {
+                            website = i.child("website").getValue().toString();
+                        }catch(NullPointerException e) {
+                            System.out.println("Website is null");
+                            e.printStackTrace();
+                        }
+                        try {
+                             username = i.child("userName").getValue().toString();
+                        }catch(NullPointerException e){
+                            System.out.println("username is null");
+                            e.printStackTrace();
+                        }
+                        try {
+                             password = i.child("password").getValue().toString();
+                        }catch (NullPointerException e){
+                            System.out.println("password is null");
+                            e.printStackTrace();
+                        }
 
-                for (DataSnapshot it : children) {
-                    DataSnapshot i = it;
-                    String website = i.child("website").getValue().toString();
-                    String username = i.child("userName").getValue().toString();
-                    String password = i.child("password").getValue().toString();
-                    User user = new User(website, username, password);
-                    users.add(user);
-                }
-                ListView resultsListView = findViewById(R.id.results_listview);
-                resultsListView.setOnItemClickListener((AdapterView.OnItemClickListener) them);
-                //Toolbar toolbar = findViewById(R.id.toolbar);
-                //setSupportActionBar(toolbar);
+                        User user = new User(website, username, password);
+                        users.add(user);
+                    }
+                    ListView resultsListView = findViewById(R.id.results_listview);
+                    resultsListView.setOnItemClickListener((AdapterView.OnItemClickListener) them);
+                    //Toolbar toolbar = findViewById(R.id.toolbar);
+                    //setSupportActionBar(toolbar);
 
-                //Lines 44-68 are used as an example so i could see how the layout is , optional)
-                nameAddresses = new HashMap<>();
+                    //Lines 44-68 are used as an example so i could see how the layout is , optional)
+                    nameAddresses = new HashMap<>();
 
-                // nameAddresses.put("www.Amazon.com", "pass123");
+                    // nameAddresses.put("www.Amazon.com", "pass123");
 
-                for (User i : users) {
-                    nameAddresses.put(i.website, i.username);//correct this?
+                    for (User i : users) {
+                        nameAddresses.put(i.website, i.username);//correct this?
 
-                }
+                    }
 
-                listItems = new ArrayList<>();
-                SimpleAdapter adapter = new SimpleAdapter(them, listItems, R.layout.list_item,
-                        new String[]{"First Line", "Second Line"},
-                        new int[]{R.id.text1, R.id.text2});
+                    listItems = new ArrayList<>();
+                    SimpleAdapter adapter = new SimpleAdapter(them, listItems, R.layout.list_item,
+                            new String[]{"First Line", "Second Line"},
+                            new int[]{R.id.text1, R.id.text2});
 
-                Iterator it = nameAddresses.entrySet().iterator();
-                while (it.hasNext()) {
-                    HashMap<String, String> resultsMap = new HashMap<>();
-                    Map.Entry pair = (Map.Entry) it.next();
-                    resultsMap.put("First Line", pair.getKey().toString());
-                    resultsMap.put("Second Line", pair.getValue().toString());
-                    listItems.add(resultsMap); //the list item values are added to listItems arrayList, call from it to get the values
-
-                }
-                resultsListView.setAdapter(adapter);
+                    Iterator it = nameAddresses.entrySet().iterator();
+                    while (it.hasNext()) {
+                        HashMap<String, String> resultsMap = new HashMap<>();
+                        Map.Entry pair = (Map.Entry) it.next();
+                        try {
+                            resultsMap.put("First Line", pair.getKey().toString());
+                            resultsMap.put("Second Line", pair.getValue().toString());
+                            listItems.add(resultsMap); //the list item values are added to listItems arrayList, call from it to get the values
+                        }catch (NullPointerException e){
+                            System.out.println("Hashmap tripped"); //return to this - app used to crash on Second line results map for some reason
+                        }
+                    }
+                    resultsListView.setAdapter(adapter);
+             //   }
             }
 
             @Override
@@ -126,6 +149,26 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
+    public boolean isNotNull(Iterable<DataSnapshot> children){
+        for (DataSnapshot it : children) {
+            DataSnapshot i = it;
+            if(i.child("website").getValue().toString().equals(null)){
+                System.out.println("Website is null");
+                return false;
+            }
+            if(i.child("userName").getValue().toString().equals(null)){
+                System.out.println("Website is null");
+
+                return false;
+            }
+            if(i.child("password").getValue().toString().equals(null)){
+                System.out.println("Website is null");
+
+                return false;
+            }
+        }
+        return true;
+    }
 
     //Intent for the listview(makes any listitem "clickable"
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
@@ -164,17 +207,18 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
     @Override
     //Toast message that will display the following if clicked, optional ofcourse
     public boolean onOptionsItemSelected(MenuItem item) {
+
         String msg = "";
         switch (item.getItemId()) {
 
             case R.id.back:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 100) {
+                if (SystemClock.elapsedRealtime() - oLastClickTime < 1000) {
                     break;
                 }
-                mLastClickTime = SystemClock.elapsedRealtime();
+                oLastClickTime = SystemClock.elapsedRealtime();
 
                 try {
-                    //TransitionActivity.setAlreadyWentToPasswords(true);
+                    msg = "Back";
                     submit();
 
                 } catch (Exception e) {
@@ -184,7 +228,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                 break;
 
             case R.id.add:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 100) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     break;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
@@ -195,7 +239,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                 break;
 
         }
-        Toast.makeText(MainActivity3.this, msg + "  Checked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity3.this, msg + "  Pressed", Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
     }
 
@@ -227,7 +271,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
         if (shouldAllowBack()) {
             super.onBackPressed();
         } else {
-            if (SystemClock.elapsedRealtime() - rLastClickTime < .01) {
+            if (SystemClock.elapsedRealtime() - rLastClickTime < 50000000) {
                 return;
             }
             rLastClickTime = SystemClock.elapsedRealtime();

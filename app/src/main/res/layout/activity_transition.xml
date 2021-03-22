@@ -59,6 +59,7 @@
         android:layout_width="411dp"
         android:layout_height="93dp"
         android:background="#2CFFFFFF"
+        android:backgroundTint="#FFFFFF"
         android:onClick="toPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,26 +74,25 @@
         android:text="Passwords"
         android:textColor="#FFFFFF"
         android:textSize="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        app:layout_constraintBottom_toTopOf="@+id/imageView5"
         app:layout_constraintEnd_toStartOf="@+id/button2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="86dp"
-        android:layout_height="71dp"
-        android:layout_marginStart="283dp"
-        android:layout_marginLeft="283dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginRight="21dp"
-        android:layout_marginBottom="17dp"
-        android:src="@android:drawable/ic_lock_idle_lock"
-        app:layout_constraintBottom_toBottomOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="@+id/button2"
-        app:layout_constraintStart_toStartOf="@+id/button2"
-        app:layout_constraintTop_toTopOf="@+id/button2" />
+        android:id="@+id/imageView5"
+        android:layout_width="94dp"
+        android:layout_height="88dp"
+        android:backgroundTint="#00FFFFFF"
+        android:foregroundTint="#00350F0F"
+        android:tint="#FF0000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499"
+        app:srcCompat="@drawable/lock" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

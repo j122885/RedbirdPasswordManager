@@ -37,7 +37,7 @@ public class MainActivity4 extends AppCompatActivity {
 
     }
 
-    public void method1(View view) {
+    public void method1(View view) throws Exception {
         error.setVisibility(View.INVISIBLE);
         String theUrl = inputUrl.getText().toString();
         String theId = inputId.getText().toString();

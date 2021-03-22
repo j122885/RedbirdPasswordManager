@@ -138,7 +138,6 @@
         android:id="@+id/registerButton"
         android:layout_width="213dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
         android:background="#CA1010"
         android:hint="Register"
         android:onClick="register"
@@ -146,16 +145,15 @@
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rPass"
-        app:layout_constraintVertical_bias="0.185" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.814" />
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="213dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="128dp"
         android:background="#CA1010"
         android:hint="Login"
         android:onClick="login"
@@ -166,7 +164,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rPass"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.814"
         tools:ignore="UnknownId" />
 
     <TextView
@@ -186,33 +185,34 @@
 
     <TextView
         android:id="@+id/passwordError"
-        android:layout_width="247dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="218dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="8dp"
         android:text="Password failed verification"
         android:textColor="#FD0000"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.603"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rUser" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="239dp"
-        android:layout_height="72dp"
+        android:layout_width="241dp"
+        android:layout_height="86dp"
         android:text="Password must have: one capital letter, lowercase letter, a number , and must be at least 8 characters long"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.044" />
 
     <EditText
         android:id="@+id/rPass"
-        android:layout_width="213dp"
-        android:layout_height="61dp"
+        android:layout_width="207dp"
+        android:layout_height="45dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -220,18 +220,36 @@
         android:textColorHint="#FAFAFA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordError"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.671" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
-        android:layout_width="213dp"
-        android:layout_height="wrap_content"
+        android:layout_width="227dp"
+        android:layout_height="62dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerButton"
-        app:layout_constraintVertical_bias="0.26" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.917" />
+
+    <TextView
+        android:id="@+id/resetPassword"
+        android:layout_width="137dp"
+        android:layout_height="22dp"
+        android:clickable="true"
+        android:linksClickable="false"
+        android:onClick="resetPassword"
+        android:text="Forgot Password?"
+        android:textColor="#F8F8F8"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.361"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.727" />
 </androidx.constraintlayout.widget.ConstraintLayout>

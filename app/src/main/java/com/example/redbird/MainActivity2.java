@@ -32,13 +32,24 @@ public class MainActivity2 extends AppCompatActivity {
     private DatabaseReference userDb;
 
     protected void onCreate(Bundle savedInstanceState) {
+        try {
+            Kimetsu kimetsu = new Kimetsu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity2_main);
 
 
         Intent intent = getIntent(); //get the intent
         username = intent.getStringExtra("username");
-        pass = intent.getStringExtra("pass");
+        String t = intent.getStringExtra("pass");
+        try {
+            pass = Kimetsu.decrypt(intent.getStringExtra("pass"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         website = intent.getStringExtra("website");
         websiteUserName = intent.getStringExtra("user");//for the specific list item you click on
 
