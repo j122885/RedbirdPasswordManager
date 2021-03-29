@@ -24,8 +24,13 @@ android {
             testCoverageEnabled = true
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -44,8 +49,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.google.firebase:firebase-firestore:19.0.0'
     implementation 'com.google.firebase:firebase-core:16.0.1'
-
-
+    implementation 'com.github.ipfs:java-ipfs-http-client:v1.3.3'
+    implementation 'io.textile:ipfslite:0.1.4'
 
 
 

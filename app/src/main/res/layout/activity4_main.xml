@@ -129,8 +129,10 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="174dp"
+        android:layout_height="51dp"
+        android:background="@drawable/roundbutton"
+        android:backgroundTint="#FFFFFF"
         android:onClick="generatePassword"
         android:text="Generate Password"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -138,7 +140,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.847" />
+        app:layout_constraintVertical_bias="0.852" />
 
     <ImageView
         android:id="@+id/imageView2"

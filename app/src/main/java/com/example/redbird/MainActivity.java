@@ -3,6 +3,7 @@ package com.example.redbird;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,10 +30,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 import javax.crypto.spec.SecretKeySpec;
+
+import io.ipfs.api.IPFS;
+import io.ipfs.api.MerkleNode;
+import io.ipfs.api.NamedStreamable;
 
 //v1.0
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -86,7 +94,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
+//        AsyncTask<Void, Void, String> response = new IPFSConfig("QmUg6o13CxZH4sBDKfyU5gQkNyurBmC74ESmtCd3ma1CDi", null, false, true).execute(); //start instance of IPFS
+//        try {
+//            System.out.println("Response from main activity: " + response.get()); //user response .get() to retrieve result from AsyncTask
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+
     }
+
 
     @Override
     protected void onStart() {
@@ -181,6 +201,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void signIn() {
+        Context context = getApplicationContext();
+        //IPFSConfig a = new IPFSConfig(context);
+
+
+           // a.doInBackground();
+
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
