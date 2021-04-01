@@ -17,7 +17,8 @@ public class MainActivity4 extends AppCompatActivity {
     EditText inputId;
     EditText inputUPass;
     TextView error;
-    String use;
+    private String use;
+    private String master;
     private long mLastClickTime = 0;
     private long rLastClickTime = 0;
 
@@ -28,6 +29,7 @@ public class MainActivity4 extends AppCompatActivity {
 
         Intent intent = getIntent();
         use = intent.getStringExtra("username");
+        master = intent.getStringExtra("masterPass");
         inputUrl = (EditText) findViewById(R.id.website);
         inputId = (EditText) findViewById(R.id.username);
         inputUPass = (EditText) findViewById(R.id.uPass);
@@ -43,11 +45,10 @@ public class MainActivity4 extends AppCompatActivity {
         String theId = inputId.getText().toString();
         String theUPass = inputUPass.getText().toString();
 
-
         if (ifEmpty(theUrl, theId, theUPass) == false) {
-            FireBaseDB entry = new FireBaseDB(theUrl, theId, theUPass);
-            entry.createNewWebsitePassword();
-            User test = new User(theUrl, theId, theUPass);
+          FireBaseDB entry = new FireBaseDB(theUrl, theId, theUPass, master);
+          entry.createNewWebsitePassword();
+            //User test = new User(theUrl, theId, theUPass);
             // list.add(test);
             submit(view);
         } else
@@ -89,6 +90,7 @@ public class MainActivity4 extends AppCompatActivity {
 
         Intent intent = new Intent(this, MainActivity3.class);
         intent.putExtra("username", use);
+        intent.putExtra("masterPass", master);
         startActivity(intent);
 
     }

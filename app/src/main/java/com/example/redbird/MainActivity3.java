@@ -3,6 +3,7 @@ package com.example.redbird;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,14 +29,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.crypto.spec.IvParameterSpec;
+
 
 public class MainActivity3 extends AppCompatActivity implements AdapterView.OnItemClickListener {
     ArrayList<User> users = new ArrayList<User>();
 
-
-    String pass;
-
-    String username;
+    private String master;
+    private String pass;
+    private String username;
+    private String salt;
+    private String iv;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
     static boolean refresh = false;
     private long mLastClickTime = 0;
@@ -53,6 +57,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
         username = username.replace(".", "-");
+        master = intent.getStringExtra("masterPass");
         DatabaseReference userDb = mDatabase.child("users").child(username).child("storedPasswords");
 
         ChildEventListener childEventListener = new ChildEventListener() {
@@ -62,6 +67,8 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                 String website = null;
                 String username = null;
                 String password = null;
+                String salt = null;
+                String iv = null;
 
                 //if (isNotNull(children)==true) {
                     for (DataSnapshot it : children) {
@@ -84,8 +91,21 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                             System.out.println("password is null");
                             e.printStackTrace();
                         }
+                        try {
+                            salt = i.child("salt").getValue().toString();
+                        }catch (NullPointerException e){
+                            System.out.println("salt is null");
+                            e.printStackTrace();
+                        }
+                        try {
+                            iv = i.child("iv").getValue().toString();
+                           // iv = (IvParameterSpec) i.child("iv").getValue();
+                        }catch (NullPointerException e){
+                            System.out.println("iv is null");
+                            e.printStackTrace();
+                        }
 
-                        User user = new User(website, username, password);
+                        User user = new User(website, username, password, salt, iv);
                         users.add(user);
                     }
                     ListView resultsListView = findViewById(R.id.results_listview);
@@ -189,9 +209,14 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
         for (User u : users) {
             if (u.website.equals(listItems.get(position).get("First Line"))) {
                 pass = u.uPass;
+                salt = u.salt;
+                iv = u.iv;
             }
         }
+        intent.putExtra("masterPass", master);
         intent.putExtra("pass", pass);
+        intent.putExtra("salt", salt);
+        intent.putExtra("iv", iv);
         //Intent to send the list to another activity
         intent.putExtra("account", users);
         startActivity(intent);//Application will crash if it is uncommented
@@ -248,6 +273,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
         intent.putExtra("account", users);
         intent.putExtra("username", username);
         intent.putExtra("pass", pass);
+        intent.putExtra("masterPass", master);
         startActivity(intent);
 
     }

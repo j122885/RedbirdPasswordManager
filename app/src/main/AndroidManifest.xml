@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.redbird">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, and MANAGE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/reggie"
@@ -10,11 +13,13 @@
         android:roundIcon="@drawable/reggie"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PasswordResetActivity"></activity>
-        <activity android:name=".MainActivity4"></activity>
-        <activity android:name=".MainActivity3"></activity>
-        <activity android:name=".MainActivity2"></activity>
-        <activity android:name=".TransitionActivity"></activity>
+        <activity android:name=".MasterLoginActivity"></activity>
+        <activity android:name=".MasterActivity" />
+        <activity android:name=".PasswordResetActivity" />
+        <activity android:name=".MainActivity4" />
+        <activity android:name=".MainActivity3" />
+        <activity android:name=".MainActivity2" />
+        <activity android:name=".TransitionActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,9 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, and MANAGE_EXTERNAL_STORAGE" />
 
 </manifest>

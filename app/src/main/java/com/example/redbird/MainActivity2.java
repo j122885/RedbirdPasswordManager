@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -17,17 +18,23 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 
+import javax.crypto.spec.IvParameterSpec;
+
 //Grace
 public class MainActivity2 extends AppCompatActivity {
-    String pass;
+    private String pass;
 
     TextView tv;
     TextView tv1;
     TextView tv2;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
-    String website;
-    String username;
-    String websiteUserName;
+    private String website;
+    private String username;
+    private  String websiteUserName;
+    private String master;
+    private String salt;
+    private IvParameterSpec iv;
+    private String stringIvHolder;
     private long rLastClickTime = 0;
     private DatabaseReference userDb;
 
@@ -44,9 +51,18 @@ public class MainActivity2 extends AppCompatActivity {
 
         Intent intent = getIntent(); //get the intent
         username = intent.getStringExtra("username");
-        String t = intent.getStringExtra("pass");
+        master = intent.getStringExtra("masterPass");
+        salt = intent.getStringExtra("salt");
+        stringIvHolder = intent.getStringExtra("iv");
+        iv = new IvParameterSpec((stringIvHolder.getBytes()));
+        String tempPassholder = intent.getStringExtra("pass");
         try {
-            pass = Kimetsu.decrypt(intent.getStringExtra("pass"));
+           // pass = Kimetsu.decrypt(intent.getStringExtra("pass"));
+//            byte[] ivs = new byte[16];
+//            iv.getBytes();
+
+            AsyncTask<Void, Void, String> response = new IPFSConfig(tempPassholder, FireBaseDB.decrypt(pass, salt, master, iv), false, true).execute();
+            pass = response.get();
         } catch (Exception e) {
             e.printStackTrace();
         }

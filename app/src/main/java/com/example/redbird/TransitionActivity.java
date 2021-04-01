@@ -19,8 +19,9 @@ import com.google.firebase.auth.FirebaseAuth;
 public class TransitionActivity extends AppCompatActivity {
 
 
-    String use;//holds username from previous page
+    private String use;//holds username from previous page
     private long mLastClickTime = 0;
+    private String master;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class TransitionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_transition);
         System.out.println("working this");
         Intent intent = getIntent(); //get the intent
-
+        master = intent.getStringExtra("masterPass");
         use = intent.getStringExtra("username");
 
 
@@ -46,7 +47,7 @@ public class TransitionActivity extends AppCompatActivity {
 
 
         intt.putExtra("username", use);
-
+        intt.putExtra("masterPass", master);
         startActivity(intt);
     }
 

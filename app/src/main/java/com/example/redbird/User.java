@@ -2,22 +2,26 @@ package com.example.redbird;
 
 import java.io.Serializable;
 
+import javax.crypto.spec.IvParameterSpec;
+
 public class User implements Serializable {
     String uPass;
     String website;
     String username; //Username
+    String salt;
+    String iv;
 
-
-    public User(String website, String username, String uPass) {
+    public User(String website, String username, String uPass, String salt, String iv) {
         this.website = website;
         this.username = username;
         this.uPass = uPass;
-
+        this.salt = salt;
+        this.iv = iv;
 
     }
 
     public String toString() {
-        return website + " " + username + " " + uPass + " ";
+        return website + " " + username + " " + uPass + " " + salt + " " + iv;
     }
 
     public String getuPass() {

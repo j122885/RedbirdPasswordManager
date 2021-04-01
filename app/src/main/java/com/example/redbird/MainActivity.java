@@ -126,7 +126,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             SignIn test = new SignIn(personEmail);
             System.out.println(acct.getEmail());
             //Go to next transition Activity
-            Intent intent = new Intent(this, TransitionActivity.class);
+            Intent intent = new Intent(this, MasterLoginActivity.class);
+            intent.putExtra("username", personEmail.toLowerCase());
+            startActivity(intent);
+        }
+    }
+    private void updateUIRegister(FirebaseUser currentUser) {
+        FirebaseUser acct = currentUser;
+        if (acct != null) {
+            personEmail = acct.getEmail();
+            SignIn test = new SignIn(personEmail);
+            System.out.println(acct.getEmail());
+            //Go to next transition Activity
+            Intent intent = new Intent(this, MasterActivity.class);
             intent.putExtra("username", personEmail.toLowerCase());
             startActivity(intent);
         }
@@ -188,7 +200,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             System.out.println(user.getEmail());
-                            updateUI(user);
+
+                            boolean newuser = task.getResult().getAdditionalUserInfo().isNewUser();
+
+
+
+                            if(newuser){
+                                updateUIRegister(user);
+                                //Do Stuffs for new user
+
+                            }else{
+                                updateUI(user);
+
+                                //Continue with Sign up
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -202,11 +227,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void signIn() {
         Context context = getApplicationContext();
-        //IPFSConfig a = new IPFSConfig(context);
-
-
-           // a.doInBackground();
-
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -261,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "createUserWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        updateUI(user);
+                                        updateUIRegister(user);
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
