@@ -53,13 +53,12 @@ public class MainActivity2 extends AppCompatActivity {
     private String stringIvHolder;
     private long rLastClickTime = 0;
     private DatabaseReference userDb;
-
+    FirebaseAuth mAuth;
+    FirebaseUser user;
+    FirebaseStorage storage;
+    StorageReference storageRef;
+    StorageReference ivRef;
     protected void onCreate(Bundle savedInstanceState) {
-//        try {
-//            Kimetsu kimetsu = new Kimetsu();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity2_main);
@@ -72,11 +71,11 @@ public class MainActivity2 extends AppCompatActivity {
         website = intent.getStringExtra("website");
         websiteUserName = intent.getStringExtra("user");//for the specific list item you click on
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference ivRef = storageRef.child(user.getEmail().replace(".", "-")).child(website.replace(".", "-")).child("iv");
+         mAuth = FirebaseAuth.getInstance();
+         user = mAuth.getCurrentUser();
+         storage = FirebaseStorage.getInstance();
+         storageRef = storage.getReference();
+         ivRef = storageRef.child(user.getEmail().replace(".", "-")).child(website.replace(".", "-")).child("iv");
 
         final long ONE_MEGABYTE = 1024 * 1024;
         ivRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -128,6 +127,19 @@ public class MainActivity2 extends AppCompatActivity {
         rLastClickTime = SystemClock.elapsedRealtime();
         userDb = mDatabase.child("users").child(username).child("storedPasswords").child("websites").child(website.replace(".", "-"));
         userDb.removeValue();
+        ivRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                Log.d("File", " deleted successfully" );
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("File", " did not delete" );
+            }
+        });
         Intent intent = new Intent(this, MainActivity3.class);
         intent.putExtra("username", username);
         startActivity(intent);

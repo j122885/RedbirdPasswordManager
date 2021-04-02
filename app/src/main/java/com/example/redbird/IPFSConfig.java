@@ -61,7 +61,6 @@ public class IPFSConfig extends AsyncTask<Void, Void, String> {
 
     private String readFromIPFS() {
         try {
-            //  String hash = "QmWfVY9y3xjsixTgbd9AorQxH7VtMpzfx2HaWtsoUYecaX"; // Hash of a file                 //read from ipfs
             Multihash multihash = Multihash.fromBase58(hash);
             byte[] content = ipfs.cat(multihash);
             System.out.println("Content of " + hash + ": " + new String(content));

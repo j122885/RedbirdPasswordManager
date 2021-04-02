@@ -31,8 +31,6 @@ public class TransitionActivity extends AppCompatActivity {
         Intent intent = getIntent(); //get the intent
         master = intent.getStringExtra("masterPass");
         use = intent.getStringExtra("username");
-
-
     }
 
 
@@ -42,10 +40,7 @@ public class TransitionActivity extends AppCompatActivity {
         }
         mLastClickTime = SystemClock.elapsedRealtime();
 
-
         Intent intt = new Intent(this, MainActivity3.class);
-
-
         intt.putExtra("username", use);
         intt.putExtra("masterPass", master);
         startActivity(intt);

@@ -7,7 +7,7 @@ import javax.crypto.spec.IvParameterSpec;
 public class User implements Serializable {
     String uPass;
     String website;
-    String username; //Username
+    String username;
     String salt;
     IvParameterSpec iv;
 

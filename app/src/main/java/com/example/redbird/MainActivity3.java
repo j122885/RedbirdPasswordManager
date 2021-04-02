@@ -105,17 +105,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                             e.printStackTrace();
                         }
                         try {
-                           // iv = i.child("iv").getValue().toString();
-                           // iv = (IvParameterSpec) i.child("iv").getValue();
 
-//                            readIv(website, new MyCallback() {
-//                                @Override
-//                                public void onCallback(byte[] bytes) {
-//                                    iv =  new IvParameterSpec(bytes);
-//                                    Log.d("Success", "iv successfully downloaded" + iv.toString());
-//
-//                                }
-//                            });
                         }catch (NullPointerException e){
                             System.out.println("iv is null");
                             e.printStackTrace();
@@ -184,32 +174,6 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
 
 
     }
-    public interface MyCallback {
-        void onCallback(byte[] bytes);
-    }
-    public void readIv(String website, MyCallback myCallback){
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference ivRef = storageRef.child(user.getEmail().replace(".", "-")).child(website.replace(".", "-")).child("iv");
-        final long ONE_MEGABYTE = 1024 * 1024;
-        ivRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                myCallback.onCallback(bytes);
-                //iv =  new IvParameterSpec(bytes);
-                Log.d("Success", "iv successfully downloaded" );
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-                Log.d("Failure", "iv not downloaded" );
-
-            }
-        });
-    }
 
     public boolean isNotNull(Iterable<DataSnapshot> children){
         for (DataSnapshot it : children) {
@@ -261,9 +225,6 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
         intent.putExtra("masterPass", master);
         intent.putExtra("pass", pass);
         intent.putExtra("salt", salt);
-        //intent.putExtra("iv", new MyParcelable(iv));
-        //Intent to send the list to another activity
-        //intent.putExtra("account", users);
         startActivity(intent);//Application will crash if it is uncommented
     }
 
@@ -355,10 +316,6 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
             }
         }
     }
-
-
-
-
 }
 
 
