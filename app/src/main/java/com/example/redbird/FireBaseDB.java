@@ -84,8 +84,10 @@ public class FireBaseDB implements LifecycleOwner {
         //mDatabase.child("users").child(user.getEmail().replace(".", "-")).child("storedPasswords").child("websites").child(website.replace(".", "-")).child("password").setValue(Kimetsu.encrypt(password));
         //new IPFSConfig(null, password, true, false).execute(); //start instance of IPFS - return hash for storage?
         String salt = new String(getNextSalt());
+        String cipherText = encrypt(masterPassword, salt, password);
+        //System.out.println("Decrypted password is " + decrypt(cipherText,salt, masterPassword, ivParameterSpec ));
 
-        AsyncTask<Void, Void, String> response = new IPFSConfig(null, encrypt(masterPassword, salt, password), true, false).execute(); //start instance of IPFS
+        AsyncTask<Void, Void, String> response = new IPFSConfig(null, cipherText, true, false).execute(); //start instance of IPFS
         try {
 //            IvParameterSpec ives = new IvParameterSpec(ivParameterSpec.getIV());
 //            a.put("iv", ivParameterSpec);

@@ -25,7 +25,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
 //Grace
@@ -64,13 +72,6 @@ public class MainActivity2 extends AppCompatActivity {
         website = intent.getStringExtra("website");
         websiteUserName = intent.getStringExtra("user");//for the specific list item you click on
 
-
-
-
-
-
-
-
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -83,7 +84,6 @@ public class MainActivity2 extends AppCompatActivity {
             public void onSuccess(byte[] bytes) {
                 Log.d("Success", "iv successfully downloaded");
                 IvParameterSpec iv =  new IvParameterSpec(bytes);
-                System.out.println("length of iv is " + iv.getIV().length);
                 try {
                     Intent intent = getIntent(); //get the intent
 
@@ -93,13 +93,12 @@ public class MainActivity2 extends AppCompatActivity {
                     salt = intent.getStringExtra("salt");
                     website = intent.getStringExtra("website");
                     websiteUserName = intent.getStringExtra("user");//for the specific list item you click on
-                    AsyncTask<Void, Void, String> response = new IPFSConfig(tempPassholder, FireBaseDB.decrypt(pass, salt, master, iv), false, true).execute();
+                    AsyncTask<Void, Void, String> response = new IPFSConfig(tempPassholder, null, false, true).execute();
                     pass = response.get();
+                    pass = FireBaseDB.decrypt(pass, salt, master, iv);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
 
                 tv = findViewById(R.id.website);
                 tv1 = findViewById(R.id.username);
@@ -119,35 +118,6 @@ public class MainActivity2 extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 
@@ -220,8 +190,6 @@ public class MainActivity2 extends AppCompatActivity {
         }
 
     }
-
-
 }
 
 
