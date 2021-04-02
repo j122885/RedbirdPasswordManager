@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +18,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +46,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
     private String pass;
     private String username;
     private String salt;
-    private String iv;
+   public static IvParameterSpec iv;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
     static boolean refresh = false;
     private long mLastClickTime = 0;
@@ -68,7 +75,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                 String username = null;
                 String password = null;
                 String salt = null;
-                String iv = null;
+                //IvParameterSpec iv = null;
 
                 //if (isNotNull(children)==true) {
                     for (DataSnapshot it : children) {
@@ -98,14 +105,25 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                             e.printStackTrace();
                         }
                         try {
-                            iv = i.child("iv").getValue().toString();
+                           // iv = i.child("iv").getValue().toString();
                            // iv = (IvParameterSpec) i.child("iv").getValue();
+
+//                            readIv(website, new MyCallback() {
+//                                @Override
+//                                public void onCallback(byte[] bytes) {
+//                                    iv =  new IvParameterSpec(bytes);
+//                                    Log.d("Success", "iv successfully downloaded" + iv.toString());
+//
+//                                }
+//                            });
                         }catch (NullPointerException e){
                             System.out.println("iv is null");
                             e.printStackTrace();
                         }
 
-                        User user = new User(website, username, password, salt, iv);
+                        User user = new User(website, username, password, salt);
+//                        Log.d("user test", "is " + iv.toString());
+
                         users.add(user);
                     }
                     ListView resultsListView = findViewById(R.id.results_listview);
@@ -113,13 +131,11 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                     //Toolbar toolbar = findViewById(R.id.toolbar);
                     //setSupportActionBar(toolbar);
 
-                    //Lines 44-68 are used as an example so i could see how the layout is , optional)
                     nameAddresses = new HashMap<>();
 
-                    // nameAddresses.put("www.Amazon.com", "pass123");
 
                     for (User i : users) {
-                        nameAddresses.put(i.website, i.username);//correct this?
+                        nameAddresses.put(i.website, i.username);
 
                     }
 
@@ -168,6 +184,32 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
 
 
     }
+    public interface MyCallback {
+        void onCallback(byte[] bytes);
+    }
+    public void readIv(String website, MyCallback myCallback){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference ivRef = storageRef.child(user.getEmail().replace(".", "-")).child(website.replace(".", "-")).child("iv");
+        final long ONE_MEGABYTE = 1024 * 1024;
+        ivRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                myCallback.onCallback(bytes);
+                //iv =  new IvParameterSpec(bytes);
+                Log.d("Success", "iv successfully downloaded" );
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.d("Failure", "iv not downloaded" );
+
+            }
+        });
+    }
 
     public boolean isNotNull(Iterable<DataSnapshot> children){
         for (DataSnapshot it : children) {
@@ -210,15 +252,18 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
             if (u.website.equals(listItems.get(position).get("First Line"))) {
                 pass = u.uPass;
                 salt = u.salt;
-                iv = u.iv;
+             //   iv = u.iv;
+
+                //Log.d("Testing", "Iv signature is " + iv.toString());
+
             }
         }
         intent.putExtra("masterPass", master);
         intent.putExtra("pass", pass);
         intent.putExtra("salt", salt);
-        intent.putExtra("iv", iv);
+        //intent.putExtra("iv", new MyParcelable(iv));
         //Intent to send the list to another activity
-        intent.putExtra("account", users);
+        //intent.putExtra("account", users);
         startActivity(intent);//Application will crash if it is uncommented
     }
 

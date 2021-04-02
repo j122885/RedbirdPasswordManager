@@ -7,14 +7,22 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 
@@ -33,17 +41,17 @@ public class MainActivity2 extends AppCompatActivity {
     private  String websiteUserName;
     private String master;
     private String salt;
-    private IvParameterSpec iv;
+    //private IvParameterSpec iv;
     private String stringIvHolder;
     private long rLastClickTime = 0;
     private DatabaseReference userDb;
 
     protected void onCreate(Bundle savedInstanceState) {
-        try {
-            Kimetsu kimetsu = new Kimetsu();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Kimetsu kimetsu = new Kimetsu();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity2_main);
@@ -53,31 +61,93 @@ public class MainActivity2 extends AppCompatActivity {
         username = intent.getStringExtra("username");
         master = intent.getStringExtra("masterPass");
         salt = intent.getStringExtra("salt");
-        stringIvHolder = intent.getStringExtra("iv");
-        iv = new IvParameterSpec((stringIvHolder.getBytes()));
-        String tempPassholder = intent.getStringExtra("pass");
-        try {
-           // pass = Kimetsu.decrypt(intent.getStringExtra("pass"));
-//            byte[] ivs = new byte[16];
-//            iv.getBytes();
-
-            AsyncTask<Void, Void, String> response = new IPFSConfig(tempPassholder, FireBaseDB.decrypt(pass, salt, master, iv), false, true).execute();
-            pass = response.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         website = intent.getStringExtra("website");
         websiteUserName = intent.getStringExtra("user");//for the specific list item you click on
 
 
-        tv = findViewById(R.id.website);
-        tv1 = findViewById(R.id.username);
-        tv2 = findViewById(R.id.pass);
 
 
-        tv.setText(website);//calling parts
-        tv1.setText(websiteUserName);
-        tv2.setText(pass);
+
+
+
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference ivRef = storageRef.child(user.getEmail().replace(".", "-")).child(website.replace(".", "-")).child("iv");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        ivRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Log.d("Success", "iv successfully downloaded");
+                IvParameterSpec iv =  new IvParameterSpec(bytes);
+                System.out.println("length of iv is " + iv.getIV().length);
+                try {
+                    Intent intent = getIntent(); //get the intent
+
+                    String tempPassholder = intent.getStringExtra("pass");
+                    username = intent.getStringExtra("username");
+                    master = intent.getStringExtra("masterPass");
+                    salt = intent.getStringExtra("salt");
+                    website = intent.getStringExtra("website");
+                    websiteUserName = intent.getStringExtra("user");//for the specific list item you click on
+                    AsyncTask<Void, Void, String> response = new IPFSConfig(tempPassholder, FireBaseDB.decrypt(pass, salt, master, iv), false, true).execute();
+                    pass = response.get();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+                tv = findViewById(R.id.website);
+                tv1 = findViewById(R.id.username);
+                tv2 = findViewById(R.id.pass);
+
+
+                tv.setText(website);//calling parts
+                tv1.setText(websiteUserName);
+                tv2.setText(pass);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.d("Failure", "iv not downloaded" );
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 

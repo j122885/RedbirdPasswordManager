@@ -9,14 +9,14 @@ public class User implements Serializable {
     String website;
     String username; //Username
     String salt;
-    String iv;
+    IvParameterSpec iv;
 
-    public User(String website, String username, String uPass, String salt, String iv) {
+    public User(String website, String username, String uPass, String salt ) {
         this.website = website;
         this.username = username;
         this.uPass = uPass;
         this.salt = salt;
-        this.iv = iv;
+
 
     }
 
