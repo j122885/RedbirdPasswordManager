@@ -5,11 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,13 +44,32 @@ private String username;
     public void validate(View view){
 
         if(masterPassword1.getText().toString().equals(masterPassword2.getText().toString())){
-            Intent intent = new Intent(this, TransitionActivity.class);
-            intent.putExtra("username", username);
+            Intent intent1 = new Intent(this, TransitionActivity.class);
+            intent1.putExtra("username", username);
+            Intent intent2 = new Intent(this, MainActivity.class);
             String pw_hash = BCrypt.hashpw(masterPassword2.getText().toString(), BCrypt.gensalt());
             FireBaseDB db = new FireBaseDB(pw_hash);
             db.inputMasterPW();
-            intent.putExtra("masterPass", masterPassword1.getText().toString());
-            startActivity(intent);
+           FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = mAuth.getCurrentUser();
+            if(user.isEmailVerified() == false) {
+                user.sendEmailVerification()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("Email status", "Email sent.");
+                                    error.setText("Check email to validate your account");
+                                    FirebaseAuth.getInstance().signOut();
+                                    error.setVisibility(View.VISIBLE);
+                                    startActivity(intent2);
+                                }
+                            }
+                        });
+            }else {
+            intent1.putExtra("masterPass", masterPassword1.getText().toString());
+            startActivity(intent1);
+            }
         }else{
             error.setVisibility(View.VISIBLE);
         }

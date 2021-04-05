@@ -1,10 +1,19 @@
 package com.example.redbird;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyPermanentlyInvalidatedException;
+import android.security.keystore.KeyProperties;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +24,7 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,10 +42,22 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import io.ipfs.api.IPFS;
@@ -64,6 +86,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static TextView et;
     static GoogleSignInClient mGoogleSignInClient;
 
+    private FingerprintManager fingerprintManager;
+    private KeyguardManager keyguardManager;
+    private KeyStore keyStore;
+    private Cipher cipher;
+    private String KEY_NAME = "AndroidKey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loginButton = (Button) findViewById(R.id.loginButton);
         loginButton.setVisibility(View.INVISIBLE);
         error = findViewById(R.id.errorMessage);
-        error.setVisibility(View.INVISIBLE);
+        //error.setVisibility(View.INVISIBLE);
         et = findViewById(R.id.errorMessage);//this is a static version of error message
         passwordError = findViewById(R.id.passwordError);
         passwordError.setVisibility(View.INVISIBLE);
@@ -105,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        }
 
 
+
+
     }
 
 
@@ -117,6 +146,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
+    }
+    public void fingerprint(View v){ //keep this here in case you want to reconfigure login for fingerprints in future
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+            keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+
+            if(!fingerprintManager.isHardwareDetected()){
+
+                error.setText("Fingerprint Scanner not detected in Device");
+
+            } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED){
+
+                error.setText("Permission not granted to use Fingerprint Scanner");
+
+            } else if (!keyguardManager.isKeyguardSecure()){
+
+                error.setText("Add Lock to your Phone in Settings");
+
+            } else if (!fingerprintManager.hasEnrolledFingerprints()){
+
+                error.setText("You should add atleast 1 Fingerprint to use this Feature");
+
+            } else {
+
+                error.setText("Place your Finger on Scanner to Access the App.");
+
+                generateKey();
+
+                if (cipherInit()){
+
+                    FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
+                    FingerprintHandler fingerprintHandler = new FingerprintHandler(this);
+                    fingerprintHandler.startAuth(fingerprintManager, cryptoObject);
+
+                }
+            }
+
+        }
     }
 
     private void updateUI(FirebaseUser currentUser) {
@@ -210,8 +278,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 //Do Stuffs for new user
 
                             }else{
-                                updateUI(user);
-
+                                    updateUI(user);
                                 //Continue with Sign up
                             }
                         } else {
@@ -281,6 +348,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "createUserWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
+
                                         updateUIRegister(user);
                                     } else {
                                         // If sign in fails, display a message to the user.
@@ -325,7 +393,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                updateUI(user);
+
+                                if (user.isEmailVerified()){
+                                    updateUI(user);
+                               }else{
+                                    Toast.makeText(context, "Please validate your email address.",
+                                        Toast.LENGTH_SHORT).show();
+                               }
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -400,4 +474,82 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void generateKey() {
+
+        try {
+
+            keyStore = KeyStore.getInstance("AndroidKeyStore");
+            KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+
+            keyStore.load(null);
+            keyGenerator.init(new
+                    KeyGenParameterSpec.Builder(KEY_NAME,
+                    KeyProperties.PURPOSE_ENCRYPT |
+                            KeyProperties.PURPOSE_DECRYPT)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                    .setUserAuthenticationRequired(true)
+                    .setEncryptionPaddings(
+                            KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                    .build());
+            keyGenerator.generateKey();
+
+        } catch (KeyStoreException | IOException | CertificateException
+                | NoSuchAlgorithmException | InvalidAlgorithmParameterException
+                | NoSuchProviderException e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public boolean cipherInit() {
+        try {
+            cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/" + KeyProperties.BLOCK_MODE_CBC + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new RuntimeException("Failed to get Cipher", e);
+        }
+
+
+        try {
+
+            keyStore.load(null);
+
+            SecretKey key = (SecretKey) keyStore.getKey(KEY_NAME,
+                    null);
+
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+
+            return true;
+
+        } catch (KeyPermanentlyInvalidatedException e) {
+            return false;
+        } catch (KeyStoreException | CertificateException | UnrecoverableKeyException | IOException | NoSuchAlgorithmException | InvalidKeyException e) {
+            throw new RuntimeException("Failed to init Cipher", e);
+        }
+
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

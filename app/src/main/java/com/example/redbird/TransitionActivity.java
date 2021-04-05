@@ -22,7 +22,7 @@ public class TransitionActivity extends AppCompatActivity {
     private String use;//holds username from previous page
     private long mLastClickTime = 0;
     private String master;
-
+    private boolean biometricLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,32 +51,34 @@ public class TransitionActivity extends AppCompatActivity {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
-        mLastClickTime = SystemClock.elapsedRealtime();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-     try {
-          mGoogleSignInClient.signOut()
-                  .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                      @Override
-                      public void onComplete(@NonNull Task<Void> task) {
-                          // ...
-                      }
-                  });
-          mGoogleSignInClient.revokeAccess()
-                  .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                      @Override
-                      public void onComplete(@NonNull Task<Void> task) {
-                          // ...
-                      }
-                  });
-      } catch(NullPointerException e){
-            System.out.println("Google Account sign error");
-        }
-        FirebaseAuth.getInstance().signOut();
+            mLastClickTime = SystemClock.elapsedRealtime();
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+            GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+            try {
+                 mGoogleSignInClient.signOut()
+                         .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                             @Override
+                             public void onComplete(@NonNull Task<Void> task) {
+                                 // ...
+                             }
+                         });
+                 mGoogleSignInClient.revokeAccess()
+                         .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                             @Override
+                             public void onComplete(@NonNull Task<Void> task) {
+                                 // ...
+                             }
+                         });
+             } catch(NullPointerException e){
+                   System.out.println("Google Account sign error");
+               }
+            FirebaseAuth.getInstance().signOut();
+
 
 
         Intent intent = new Intent(this, MainActivity.class);
