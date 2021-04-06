@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -53,15 +54,16 @@ private String username;
            FirebaseAuth mAuth = FirebaseAuth.getInstance();
             FirebaseUser user = mAuth.getCurrentUser();
             if(user.isEmailVerified() == false) {
-                user.sendEmailVerification()
+                user.sendEmailVerification()  
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Log.d("Email status", "Email sent.");
-                                    error.setText("Check email to validate your account");
+                                    Toast.makeText( getApplicationContext() , "Check your email to validate your account.", Toast.LENGTH_LONG).show();
+
                                     FirebaseAuth.getInstance().signOut();
-                                    error.setVisibility(View.VISIBLE);
+                                    //error.setVisibility(View.VISIBLE);
                                     startActivity(intent2);
                                 }
                             }

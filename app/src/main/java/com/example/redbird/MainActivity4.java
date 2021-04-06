@@ -1,15 +1,24 @@
 package com.example.redbird;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity4 extends AppCompatActivity {
 
@@ -17,10 +26,12 @@ public class MainActivity4 extends AppCompatActivity {
     EditText inputId;
     EditText inputUPass;
     TextView error;
+    TextView passwordStrength;
     private String use;
     private String master;
     private long mLastClickTime = 0;
     private long rLastClickTime = 0;
+    ProgressBar simpleProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +46,74 @@ public class MainActivity4 extends AppCompatActivity {
         inputUPass = (EditText) findViewById(R.id.uPass);
         error = findViewById(R.id.error);
         error.setVisibility(View.INVISIBLE);
+        simpleProgressBar = (ProgressBar) findViewById(R.id.simpleProgressBar);
+        simpleProgressBar.setMax(100); // 100 maximum value for the progress value
+        simpleProgressBar.setProgress(0);
+        passwordStrength = (TextView) findViewById(R.id.passwordStrength);
+        inputUPass.addTextChangedListener(new TextWatcher() {
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Pattern p = Pattern.compile("[!@@#$%&*()_+=|<>?{}\\\\[\\\\]~-]", Pattern.CASE_INSENSITIVE);
+                Matcher m = p.matcher(s.toString());
+                boolean b = m.find();
+
+
+                 if(minimumPassword(s.toString() ) && b==false){
+                    simpleProgressBar.setProgress(100);
+                    passwordStrength.setText("Password Strength: Medium");
+                }
+                else if ( b==true && minimumPassword(s.toString())){
+                    simpleProgressBar.setProgress(1);
+                    passwordStrength.setText("Password Strength: Strong");
+                }else{
+                    simpleProgressBar.setProgress(0);
+                    passwordStrength.setText("Password Strength: Weak");
+
+                }
+            }
+        });
+    }
+    public boolean minimumPassword(String pass) {
+        ArrayList<Character> chars = new ArrayList<Character>();
+        Boolean capital = false;
+        Boolean lowercase = false;
+        Boolean number = false;
+        Boolean notEnoughChars = false;
+        if (pass.length() > 7) {
+            for (int i = 0; i < pass.length(); i++) {
+                if (Character.isUpperCase(pass.charAt(i))) {
+                    capital = true;
+                }
+                if (Character.isLowerCase(pass.charAt(i))) {
+                    lowercase = true;
+                }
+                if (Character.isDigit(pass.charAt(i))) {
+                    number = true;
+                }
+            }
+            if (capital && lowercase && number) {
+                System.out.println("Password verification passed");
+                return true;
+            }
+        }
+        System.out.println("Password verification failed");
+
+        return false;
 
     }
 

@@ -137,10 +137,10 @@
         android:text="Generate Password"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.443"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.852" />
+        app:layout_constraintVertical_bias="0.91" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -208,5 +208,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.161" />
+
+    <ProgressBar
+        android:id="@+id/simpleProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="236dp"
+        android:layout_height="28dp"
+        android:max="100"
+        android:padding="10dp"
+        android:progress="60"
+        android:progressDrawable="@drawable/custom_progress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.81" />
+
+    <TextView
+        android:id="@+id/passwordStrength"
+        android:layout_width="203dp"
+        android:layout_height="23dp"
+        android:text="Password Strength: Weak"
+        android:textColor="#FBFBFB"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.423"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.772" /><!--set 100 maximum value for the progress bar-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
