@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +39,8 @@ public class PasswordResetActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Password reset email sent.",
+                                        Toast.LENGTH_LONG).show();
                                 Log.d("Email Status", "Email sent.");
                             }
                         }

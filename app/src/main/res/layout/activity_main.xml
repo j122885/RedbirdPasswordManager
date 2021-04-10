@@ -78,8 +78,8 @@
     <EditText
         android:id="@+id/rUser"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
-        android:layout_width="213dp"
-        android:layout_height="51dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="112dp"
         android:editable="true"
         android:ems="10"
@@ -90,11 +90,12 @@
         android:textColor="#FFFFFF"
         android:textColorHighlight="#BD2A2A"
         android:textColorHint="#F8F8F8"
-        app:layout_constraintBottom_toTopOf="@+id/r"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.777" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.428" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -136,8 +137,8 @@
 
     <Button
         android:id="@+id/registerButton"
-        android:layout_width="213dp"
-        android:layout_height="wrap_content"
+        android:layout_width="224dp"
+        android:layout_height="51dp"
         android:background="@drawable/roundbutton"
         android:hint="Register"
         android:onClick="register"
@@ -145,15 +146,16 @@
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.83" />
+        app:layout_constraintVertical_bias="0.762" />
 
     <Button
         android:id="@+id/loginButton"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="213dp"
-        android:layout_height="wrap_content"
+        android:layout_width="224dp"
+        android:layout_height="51dp"
         android:background="@drawable/roundbutton"
         android:backgroundTint="#E10000"
         android:hint="Login"
@@ -163,18 +165,18 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.83"
 
 
+        app:layout_constraintVertical_bias="0.761"
         tools:ignore="UnknownId" />
 
     <TextView
         android:id="@+id/errorMessage"
-        android:layout_width="259dp"
-        android:layout_height="29dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="270dp"
         android:textColor="#CA1010"
         android:visibility="visible"
@@ -188,15 +190,17 @@
     <TextView
         android:id="@+id/passwordError"
         android:layout_width="218dp"
-        android:layout_height="19dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Password failed verification"
         android:textColor="#FD0000"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rUser" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.561" />
 
     <TextView
         android:id="@+id/textView3"
@@ -213,8 +217,8 @@
 
     <EditText
         android:id="@+id/rPass"
-        android:layout_width="207dp"
-        android:layout_height="45dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -222,21 +226,21 @@
         android:textColorHint="#FAFAFA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.671" />
+        app:layout_constraintVertical_bias="0.615" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
-        android:layout_width="227dp"
-        android:layout_height="62dp"
+        android:layout_width="218dp"
+        android:layout_height="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934" />
+        app:layout_constraintVertical_bias="0.862" />
 
     <TextView
         android:id="@+id/resetPassword"
@@ -250,10 +254,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.361"
+        app:layout_constraintHorizontal_bias="0.372"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.727" />
+        app:layout_constraintVertical_bias="0.658" />
 
     <TextView
         android:id="@+id/textView18"
@@ -264,22 +268,22 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.346"
+        app:layout_constraintHorizontal_bias="0.376"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.755" />
+        app:layout_constraintVertical_bias="0.686" />
 
     <ImageButton
         android:id="@+id/fingerprintImage"
-        android:layout_width="50dp"
-        android:layout_height="38dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:backgroundTint="#0C0C0C"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.759"
+        app:layout_constraintHorizontal_bias="0.734"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.744"
+        app:layout_constraintVertical_bias="0.676"
         app:srcCompat="@drawable/fingerprint_foreground" />
 </androidx.constraintlayout.widget.ConstraintLayout>

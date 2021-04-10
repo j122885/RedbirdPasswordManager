@@ -2,8 +2,11 @@ package com.example.redbird;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -11,10 +14,13 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +31,7 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -91,7 +98,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private KeyStore keyStore;
     private Cipher cipher;
     private String KEY_NAME = "AndroidKey";
-
+    private int attempts = 0;
+    private long time = 0;
+    private TextView timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,8 +130,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+//        final Dialog d = new Dialog(this);
+//        d.getContext();
+//        TextView timer = (TextView) findViewById(R.id.countDown);//fix this causes error
+//
+//        timer.setText("seconds remaining: " );
+//
+//        //d.getLayoutInflater().inflate();
+//        d.setContentView( R.layout.timeout);
+//
+//        d.setOnShowListener(new DialogInterface.OnShowListener(){
+//            @Override
+//            public void onShow(DialogInterface dialog) {
+//                new CountDownTimer(30000, 1000) {
+//                    TextView timer = (TextView) findViewById(R.id.countDown);
+//                    public void onTick(long millisUntilFinished) {
+//                        timer.setText("seconds remaining: " + millisUntilFinished / 1000);
+//                    }
+//                    public void onFinish() {
+//                        timer.setText("done!");
+//                    }
+//                }.start();
+//            }
+//        });
+//        d.show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        LayoutInflater inflater = this.getLayoutInflater();
+//        View v = inflater.inflate(R.layout.timeout, null);
+//
+//        builder.setView(v);
+//
+//
+//
+//        builder.create().show();
+//        timer = (TextView) v.findViewById(R.id.countDown);
+//        new CountDownTimer(30000, 1000) {
+//            TextView timer = (TextView) findViewById(R.id.countDown);
+//            public void onTick(long millisUntilFinished) {
+//                timer.setText("seconds remaining: " + millisUntilFinished / 1000);
+//            }
+//            public void onFinish() {
+//                timer.setText("done!");
+//            }
+//        }.start();
 
-//        AsyncTask<Void, Void, String> response = new IPFSConfig("QmUg6o13CxZH4sBDKfyU5gQkNyurBmC74ESmtCd3ma1CDi", null, false, true).execute(); //start instance of IPFS
+//        final Dialog d = new Dialog(this);
+//        //d.getLayoutInflater().inflate();
+//
+//        d.setContentView(getLayoutInflater().inflate( R.layout.timeout, null));
+//        d.show();//        AsyncTask<Void, Void, String> response = new IPFSConfig("QmUg6o13CxZH4sBDKfyU5gQkNyurBmC74ESmtCd3ma1CDi", null, false, true).execute(); //start instance of IPFS
 //        try {
 //            System.out.println("Response from main activity: " + response.get()); //user response .get() to retrieve result from AsyncTask
 //        } catch (ExecutionException e) {
@@ -133,8 +189,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-
     }
+    private void showAlertDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        TimeoutFragment alertDialog = TimeoutFragment.newInstance("Some title");
+        alertDialog.setCancelable(false);
+        alertDialog.show(fm, "fragment_alert");
+    }
+
 
 
     @Override
@@ -332,6 +394,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     public void register(View view) throws Exception { // New Firebase user creation
+        if (SystemClock.elapsedRealtime() - rLastClickTime < 1000) {
+            return;
+        }
+        rLastClickTime = SystemClock.elapsedRealtime();
+
         passwordError.setVisibility(View.INVISIBLE);
         error.setVisibility(View.INVISIBLE);//sets warning to invisible
         String username = rUser.getText().toString();//gets username from Edit text
@@ -376,43 +443,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void login(View view) throws Exception {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+            return;
+        }
+
+        mLastClickTime = SystemClock.elapsedRealtime();
 
         passwordError.setVisibility(View.INVISIBLE);
         error.setVisibility(View.INVISIBLE);//sets warning to invisible
         String password = rPass.getText().toString();//gets passworkd from Edit text
         String username = rUser.getText().toString();//gets username from Edit text
 
-        if (password.isEmpty() || username.isEmpty()) {
+       if(attempts < 2) {
+           if (password.isEmpty() || username.isEmpty()) {
 
-        } else {
-            mAuth.signInWithEmailAndPassword(username, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
+           } else {
+               mAuth.signInWithEmailAndPassword(username, password)
+                       .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                           @Override
+                           public void onComplete(@NonNull Task<AuthResult> task) {
+                               if (task.isSuccessful()) {
+                                   // Sign in success, update UI with the signed-in user's information
+                                   Log.d(TAG, "signInWithEmail:success");
+                                   FirebaseUser user = mAuth.getCurrentUser();
 
-                                if (user.isEmailVerified()){
-                                    updateUI(user);
-                               }else{
-                                    Toast.makeText(context, "Please validate your email address.",
-                                        Toast.LENGTH_SHORT).show();
+                                   if (user.isEmailVerified()) {
+                                       attempts = 0;
+                                       updateUI(user);
+                                   } else {
+                                       Toast.makeText(context, "Please validate your email address.",
+                                               Toast.LENGTH_SHORT).show();
+                                   }
+                               } else {
+                                   // If sign in fails, display a message to the user.
+                                   Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                   Context context = getApplicationContext();
+                                   Toast.makeText(context, "Authentication failed.",
+                                           Toast.LENGTH_SHORT).show();
+                                          attempts++;
+
                                }
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Context context = getApplicationContext();
 
-                                Toast.makeText(context, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-
-                            }
-
-                        }
-                    });
-        }
+                           }
+                       });
+           }
+       }else{
+           showAlertDialog();
+           attempts = attempts-1;
+       }
 
     }
 
