@@ -118,7 +118,18 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
     }
-
+public void edit(View view){
+    if (SystemClock.elapsedRealtime() - rLastClickTime < 1000) {
+        return;
+    }
+    Intent intent = new Intent(this, MainActivity6.class);
+    intent.putExtra("url", website);
+    intent.putExtra("id", websiteUserName);
+    intent.putExtra("pass", pass);
+    intent.putExtra("masterPass", master);
+    intent.putExtra("username",username);
+    startActivity(intent);
+}
 
     public void delete(View view) throws IOException {
         if (SystemClock.elapsedRealtime() - rLastClickTime < 1000) {
