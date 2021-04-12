@@ -130,55 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-//        final Dialog d = new Dialog(this);
-//        d.getContext();
-//        TextView timer = (TextView) findViewById(R.id.countDown);//fix this causes error
-//
-//        timer.setText("seconds remaining: " );
-//
-//        //d.getLayoutInflater().inflate();
-//        d.setContentView( R.layout.timeout);
-//
-//        d.setOnShowListener(new DialogInterface.OnShowListener(){
-//            @Override
-//            public void onShow(DialogInterface dialog) {
-//                new CountDownTimer(30000, 1000) {
-//                    TextView timer = (TextView) findViewById(R.id.countDown);
-//                    public void onTick(long millisUntilFinished) {
-//                        timer.setText("seconds remaining: " + millisUntilFinished / 1000);
-//                    }
-//                    public void onFinish() {
-//                        timer.setText("done!");
-//                    }
-//                }.start();
-//            }
-//        });
-//        d.show();
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        LayoutInflater inflater = this.getLayoutInflater();
-//        View v = inflater.inflate(R.layout.timeout, null);
-//
-//        builder.setView(v);
-//
-//
-//
-//        builder.create().show();
-//        timer = (TextView) v.findViewById(R.id.countDown);
-//        new CountDownTimer(30000, 1000) {
-//            TextView timer = (TextView) findViewById(R.id.countDown);
-//            public void onTick(long millisUntilFinished) {
-//                timer.setText("seconds remaining: " + millisUntilFinished / 1000);
-//            }
-//            public void onFinish() {
-//                timer.setText("done!");
-//            }
-//        }.start();
 
-//        final Dialog d = new Dialog(this);
-//        //d.getLayoutInflater().inflate();
-//
-//        d.setContentView(getLayoutInflater().inflate( R.layout.timeout, null));
-//        d.show();//        AsyncTask<Void, Void, String> response = new IPFSConfig("QmUg6o13CxZH4sBDKfyU5gQkNyurBmC74ESmtCd3ma1CDi", null, false, true).execute(); //start instance of IPFS
+//   AsyncTask<Void, Void, String> response = new IPFSConfig("QmUg6o13CxZH4sBDKfyU5gQkNyurBmC74ESmtCd3ma1CDi", null, false, true).execute(); //start instance of IPFS
 //        try {
 //            System.out.println("Response from main activity: " + response.get()); //user response .get() to retrieve result from AsyncTask
 //        } catch (ExecutionException e) {

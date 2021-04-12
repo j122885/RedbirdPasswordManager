@@ -2,6 +2,7 @@ package com.example.redbird;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -110,6 +111,12 @@ public class MasterLoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+    public void showAlertDialog(View v) {
+        FragmentManager fm = getSupportFragmentManager();
+        ResetAccountFragment alertDialog = ResetAccountFragment.newInstance("Reset Account");
+        alertDialog.setCancelable(false);
+        alertDialog.show(fm, "fragment_alert");
     }
 
     private boolean shouldAllowBack() {
