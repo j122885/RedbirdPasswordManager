@@ -26,8 +26,8 @@
 
     <TextView
         android:id="@+id/textView17"
-        android:layout_width="249dp"
-        android:layout_height="36dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Please enter a Master Password"
         android:textColor="#FBF8F8"
         android:textSize="18sp"
@@ -58,7 +58,7 @@
 
     <TextView
         android:id="@+id/textView20"
-        android:layout_width="249dp"
+        android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:text="Please re-enter your password"
         android:textColor="#FBF8F8"
@@ -106,7 +106,7 @@
     <EditText
         android:id="@+id/masterPassword1"
         android:layout_width="248dp"
-        android:layout_height="39dp"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -122,7 +122,7 @@
     <EditText
         android:id="@+id/masterPassword2"
         android:layout_width="248dp"
-        android:layout_height="39dp"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +32,7 @@ public class MainActivity4 extends AppCompatActivity {
     private String master;
     private long mLastClickTime = 0;
     private long rLastClickTime = 0;
+    private long gLastClickTime = 0;
     ProgressBar simpleProgressBar;
 
     @Override
@@ -81,7 +83,7 @@ public class MainActivity4 extends AppCompatActivity {
                     simpleProgressBar.setProgress(1);
                     passwordStrength.setText("Password Strength: Strong");
                 }else{
-                    simpleProgressBar.setProgress(0);
+                    simpleProgressBar.setProgress(99);
                     passwordStrength.setText("Password Strength: Weak");
 
                 }
@@ -151,10 +153,19 @@ public class MainActivity4 extends AppCompatActivity {
             int randomIndex = random.nextInt(chars.length());
             sb.append(chars.charAt(randomIndex));
         }
-        return sb.toString();
+        Random rand = new Random(); //instance of random class
+        int upperbound = 10;
+        //generate random values from 0-9
+        int int_random = rand.nextInt(upperbound);
+
+        return int_random + sb.toString() + "@";
     }
 
     public void generatePassword(View view) {
+        if (SystemClock.elapsedRealtime() - gLastClickTime < 1000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
         String generated = generatePasswordText(15);
         inputUPass.setText(generated);
     }

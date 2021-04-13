@@ -172,35 +172,7 @@ public class ResetAccountFragment extends DialogFragment {
 
                         }
                     });
-
-
-
-
-
-
-
-
-
-
-//                    ivRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-//                        @Override
-//                        public void onSuccess(Void aVoid) {
-//                            // File deleted successfully
-//                            Log.d("Files", " deleted successfully" );
-//                            Intent intent = new Intent(getActivity(), MasterActivity.class);
-//                            Context context = v.getContext();
-//                                        Toast.makeText(context, "User account has been reset.",
-//                                                Toast.LENGTH_SHORT).show();
-//
-//                            intent.putExtra("username", user.getEmail());
-//                            startActivity(intent);
-//                        }
-//                    }).addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception exception) {
-//                            Log.d("Files", " did not delete" );
-//                        }
-//                    });
+                    
                 }
             }
         });

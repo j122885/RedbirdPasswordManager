@@ -216,7 +216,7 @@
         android:layout_height="28dp"
         android:max="100"
         android:padding="10dp"
-        android:progress="60"
+        android:progress="100"
         android:progressDrawable="@drawable/custom_progress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
