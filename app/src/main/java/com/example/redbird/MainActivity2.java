@@ -1,5 +1,6 @@
 package com.example.redbird;
 
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -62,6 +63,12 @@ public class MainActivity2 extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity2_main);
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("ProgressDialog");
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
 
         Intent intent = getIntent(); //get the intent
@@ -107,8 +114,9 @@ public class MainActivity2 extends AppCompatActivity {
                 tv.setText(website);//calling parts
                 tv1.setText(websiteUserName);
                 tv2.setText(pass);
-
+                progressDialog.dismiss();
             }
+
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {

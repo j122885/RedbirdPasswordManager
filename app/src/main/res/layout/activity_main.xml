@@ -82,6 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="112dp"
+        android:backgroundTint="#E10000"
         android:editable="true"
         android:ems="10"
         android:hint="Email"
@@ -92,6 +93,7 @@
         android:textColorHighlight="#BD2A2A"
         android:textColorHint="#F8F8F8"
         android:textColorLink="#F80101"
+        android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -104,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.24" />
+        app:layout_constraintGuide_percent="0.77" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
@@ -172,7 +174,7 @@
         app:layout_constraintTop_toTopOf="parent"
 
 
-        app:layout_constraintVertical_bias="0.761"
+        app:layout_constraintVertical_bias="0.762"
         tools:ignore="UnknownId" />
 
     <TextView
@@ -221,6 +223,7 @@
         android:id="@+id/rPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#E10000"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -228,6 +231,7 @@
         android:textColorHighlight="#FD0000"
         android:textColorHint="#FAFAFA"
         android:textColorLink="#FD0000"
+        android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -276,4 +280,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.676"
         app:srcCompat="@drawable/fingerprint_foreground" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

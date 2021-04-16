@@ -3,6 +3,9 @@ package com.example.redbird;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -50,7 +53,7 @@ public class MainActivity4 extends AppCompatActivity {
         error.setVisibility(View.INVISIBLE);
         simpleProgressBar = (ProgressBar) findViewById(R.id.simpleProgressBar);
         simpleProgressBar.setMax(100); // 100 maximum value for the progress value
-        simpleProgressBar.setProgress(0);
+
         passwordStrength = (TextView) findViewById(R.id.passwordStrength);
         inputUPass.addTextChangedListener(new TextWatcher() {
 
@@ -76,14 +79,14 @@ public class MainActivity4 extends AppCompatActivity {
 
 
                  if(minimumPassword(s.toString() ) && b==false){
-                    simpleProgressBar.setProgress(100);
-                    passwordStrength.setText("Password Strength: Medium");
+                     simpleProgressBar.setProgressTintList(ColorStateList.valueOf(Color.YELLOW));
+                     passwordStrength.setText("Password Strength: Medium");
                 }
                 else if ( b==true && minimumPassword(s.toString())){
-                    simpleProgressBar.setProgress(1);
+                    simpleProgressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
                     passwordStrength.setText("Password Strength: Strong");
                 }else{
-                    simpleProgressBar.setProgress(99);
+                    simpleProgressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
                     passwordStrength.setText("Password Strength: Weak");
 
                 }

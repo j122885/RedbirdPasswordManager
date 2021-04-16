@@ -8,6 +8,19 @@
     tools:context=".MasterActivity">
 
     <TextView
+        android:id="@+id/textView18"
+        android:layout_width="241dp"
+        android:layout_height="wrap_content"
+        android:text="Master Password must have: one capital letter, lowercase letter, a number , and must be at least 8 characters long"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.044" />
+
+    <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -107,11 +120,13 @@
         android:id="@+id/masterPassword1"
         android:layout_width="248dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#E10000"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:textColor="#FDFCFC"
         android:textColorHint="#FAF6F6"
+        android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
@@ -123,11 +138,13 @@
         android:id="@+id/masterPassword2"
         android:layout_width="248dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#E10000"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:textColor="#FFFFFF"
         android:textColorHint="#FAF6F6"
+        android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"

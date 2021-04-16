@@ -28,6 +28,7 @@ import java.util.Base64;
 public class MasterLoginActivity extends AppCompatActivity {
     EditText masterPassword1;
     TextView error;
+    TextView welcome;
     private String username;
     private String response= null;
     private long mLastClickTime = 0;
@@ -41,6 +42,8 @@ public class MasterLoginActivity extends AppCompatActivity {
         masterPassword1 = (EditText) findViewById(R.id.masterPassword1);
         Intent intent = getIntent();
         username=  intent.getStringExtra("username");
+        welcome = (TextView) findViewById(R.id.welcome) ;
+        welcome.setText("Welcome back " +  username);
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();

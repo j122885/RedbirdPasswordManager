@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -15,6 +18,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 public class TransitionActivity extends AppCompatActivity {
 
@@ -23,6 +33,9 @@ public class TransitionActivity extends AppCompatActivity {
     private long mLastClickTime = 0;
     private String master;
     private boolean biometricLogin;
+    private int count = 0;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
+    TextView passCounter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +44,40 @@ public class TransitionActivity extends AppCompatActivity {
         Intent intent = getIntent(); //get the intent
         master = intent.getStringExtra("masterPass");
         use = intent.getStringExtra("username");
+        passCounter =  findViewById(R.id.passwordCount);
+        DatabaseReference userDb = mDatabase.child("users").child(use.replace(".", "-")).child("storedPasswords");
+        ChildEventListener childEventListener = new ChildEventListener() {
+
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                count = (int) snapshot.getChildrenCount();
+                passCounter.setText(String.valueOf(count));
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        userDb.addChildEventListener(childEventListener);
+
     }
 
 

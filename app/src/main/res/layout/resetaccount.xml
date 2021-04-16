@@ -16,6 +16,7 @@
         android:text="Your account along with all of your logins and passwords will be deleted from Redbird Password Manager."
         android:textColor="#F40101"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -51,11 +52,13 @@
         android:id="@+id/confirmField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#E10000"
         android:ems="10"
         android:hint="Type here"
         android:inputType="textPersonName"
         android:textColor="#FDFDFD"
-        android:textColorHint="#FFFAFA" />
+        android:textColorHint="#FFFAFA"
+        android:textCursorDrawable="@drawable/color_cursor" />
 
     <LinearLayout
         android:layout_width="match_parent"
