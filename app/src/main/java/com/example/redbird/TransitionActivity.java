@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,18 +22,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
 public class TransitionActivity extends AppCompatActivity {
 
 
     private String use;//holds username from previous page
     private long mLastClickTime = 0;
+    private long pLastClickTime = 0;
+
     private String master;
     private boolean biometricLogin;
     private int count = 0;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
+    private final DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
     TextView passCounter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,13 +92,22 @@ public class TransitionActivity extends AppCompatActivity {
         startActivity(intt);
     }
 
+    public void toSettings(View view) {
+        if (SystemClock.elapsedRealtime() - pLastClickTime < 10000) {
+            return;
+        }
+        pLastClickTime = SystemClock.elapsedRealtime();
+
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
+    }
 
     public void logout(View view) throws Exception {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
 
-            mLastClickTime = SystemClock.elapsedRealtime();
+        mLastClickTime = SystemClock.elapsedRealtime();
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
                     .requestEmail()

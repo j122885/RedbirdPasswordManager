@@ -1,12 +1,9 @@
 package com.example.redbird;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
@@ -15,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,7 +33,7 @@ public class MainActivity4 extends AppCompatActivity {
     private String master;
     private long mLastClickTime = 0;
     private long rLastClickTime = 0;
-    private long gLastClickTime = 0;
+    private final long gLastClickTime = 0;
     ProgressBar simpleProgressBar;
 
     @Override
@@ -46,15 +44,15 @@ public class MainActivity4 extends AppCompatActivity {
         Intent intent = getIntent();
         use = intent.getStringExtra("username");
         master = intent.getStringExtra("masterPass");
-        inputUrl = (EditText) findViewById(R.id.website);
-        inputId = (EditText) findViewById(R.id.username);
-        inputUPass = (EditText) findViewById(R.id.uPass);
+        inputUrl = findViewById(R.id.website);
+        inputId = findViewById(R.id.username);
+        inputUPass = findViewById(R.id.uPass);
         error = findViewById(R.id.error);
         error.setVisibility(View.INVISIBLE);
-        simpleProgressBar = (ProgressBar) findViewById(R.id.simpleProgressBar);
+        simpleProgressBar = findViewById(R.id.simpleProgressBar);
         simpleProgressBar.setMax(100); // 100 maximum value for the progress value
 
-        passwordStrength = (TextView) findViewById(R.id.passwordStrength);
+        passwordStrength = findViewById(R.id.passwordStrength);
         inputUPass.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -129,8 +127,12 @@ public class MainActivity4 extends AppCompatActivity {
         String theUPass = inputUPass.getText().toString();
 
         if (ifEmpty(theUrl, theId, theUPass) == false) {
-          FireBaseDB entry = new FireBaseDB(theUrl, theId, theUPass, master);
-          entry.createNewWebsitePassword();
+            Context context = getApplicationContext();
+            Toast.makeText(context, "Encrypting...",
+                    Toast.LENGTH_SHORT).show();
+            FireBaseDB entry = new FireBaseDB(theUrl, theId, theUPass, master);
+            entry.createNewWebsitePassword();
+
             //User test = new User(theUrl, theId, theUPass);
             // list.add(test);
             submit(view);
@@ -139,10 +141,8 @@ public class MainActivity4 extends AppCompatActivity {
     }
 
     public boolean ifEmpty(String url, String id, String pass) {
-        if (url.isEmpty() || url.contains(" ") || id.isEmpty() || id.contains(" ") || pass.isEmpty() || pass.contains(" ")) { //you need to change this so that it also rejects it if it only has whitespace(spaces)
-            return true;
-        } else
-            return false;
+        //you need to change this so that it also rejects it if it only has whitespace(spaces)
+        return url.isEmpty() || url.contains(" ") || id.isEmpty() || id.contains(" ") || pass.isEmpty() || pass.contains(" ");
     }
 
 

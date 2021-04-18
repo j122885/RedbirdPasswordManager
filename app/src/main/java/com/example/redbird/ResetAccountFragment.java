@@ -21,7 +21,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -60,7 +59,7 @@ public class ResetAccountFragment extends DialogFragment {
         // Get field from view
         cancelButton = view.findViewById(R.id.cancelButton);
         deleteButton = view.findViewById(R.id.deleteButton);
-        confirm = (EditText) view.findViewById(R.id.confirmField);
+        confirm = view.findViewById(R.id.confirmField);
         // Fetch arguments from bundle and set title
         String title = getArguments().getString("title", "Enter Name");
         getDialog().setTitle(title);
@@ -78,36 +77,13 @@ public class ResetAccountFragment extends DialogFragment {
         });
 
     }
-//    public void delete(View v){
-//
-//        deleteButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(confirm.getText().toString().equalsIgnoreCase("delete")){
-//                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//                    user.delete()
-//                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    if (task.isSuccessful()) {
-//                                        Log.d("User status", "User account deleted.");
-//                                       Context context = v.getContext();
-//                                        Toast.makeText(context, "User account has been deleted.",
-//                                                Toast.LENGTH_SHORT).show();
-//                                        //Intent intent = new Intent(MasterLoginActivity.class, MainActivity.class);
-//                                    }
-//                                }
-//                            });
-//                }
-//            }
-//        });
-//    }
+
     public void reset(){
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(confirm.getText().toString().equalsIgnoreCase("delete")){
+                if (confirm.getText().toString().equalsIgnoreCase("reset")) {
                     DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
                     DatabaseReference userDb; //realtime databasse
                     DatabaseReference userDb2;//cloud

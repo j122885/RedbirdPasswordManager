@@ -218,8 +218,8 @@
     <ProgressBar
         android:id="@+id/simpleProgressBar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="215dp"
-        android:layout_height="29dp"
+        android:layout_width="236dp"
+        android:layout_height="28dp"
         android:indeterminateDrawable="@drawable/custom_progress"
         android:max="100"
         android:padding="10dp"
@@ -228,10 +228,10 @@
         android:progressTint="#F60303"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.479"
+        app:layout_constraintHorizontal_bias="0.415"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.811" />
+        app:layout_constraintVertical_bias="0.809" />
 
     <TextView
         android:id="@+id/passwordStrength"
@@ -241,7 +241,7 @@
         android:textColor="#FBFBFB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.389"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.772" />
@@ -251,6 +251,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="311dp" /><!--set 100 maximum value for the progress bar-->
+        app:layout_constraintGuide_begin="81dp" /><!--set 100 maximum value for the progress bar-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

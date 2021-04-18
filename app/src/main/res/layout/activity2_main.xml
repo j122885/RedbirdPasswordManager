@@ -156,18 +156,16 @@
 
     <ImageView
         android:id="@+id/done"
-        android:layout_width="64dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="320dp"
-        android:layout_marginTop="57dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginBottom="642dp"
+        android:layout_width="56dp"
+        android:layout_height="40dp"
         android:onClick="edit"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.904"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.098"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 
     <androidx.constraintlayout.widget.Guideline

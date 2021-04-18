@@ -41,7 +41,7 @@
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please enter a Master Password"
+        android:text="Please enter a master password"
         android:textColor="#FBF8F8"
         android:textSize="18sp"
         android:textStyle="bold"

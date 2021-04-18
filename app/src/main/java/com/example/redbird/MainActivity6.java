@@ -1,9 +1,9 @@
 package com.example.redbird;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
@@ -12,11 +12,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,18 +43,17 @@ public class MainActivity6 extends AppCompatActivity {
         Intent intent = getIntent();
         use = intent.getStringExtra("username");
         master = intent.getStringExtra("masterPass");
-        inputUrl =  findViewById(R.id.website);
+        inputUrl = findViewById(R.id.website);
         inputUrl.setText(intent.getStringExtra("url"));
-        inputId = (EditText) findViewById(R.id.username);
+        inputId = findViewById(R.id.username);
         inputId.setText(intent.getStringExtra("id"));
-        inputUPass = (EditText) findViewById(R.id.uPass);
-        inputUPass.setText(intent.getStringExtra("pass"));
+        inputUPass = findViewById(R.id.uPass);
         error = findViewById(R.id.error);
         error.setVisibility(View.INVISIBLE);
-        simpleProgressBar = (ProgressBar) findViewById(R.id.simpleProgressBar);
+        simpleProgressBar = findViewById(R.id.simpleProgressBar);
         simpleProgressBar.setMax(100); // 100 maximum value for the progress value
-        simpleProgressBar.setProgress(0);
-        passwordStrength = (TextView) findViewById(R.id.passwordStrength);
+
+        passwordStrength = findViewById(R.id.passwordStrength);
         inputUPass.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -65,7 +66,6 @@ public class MainActivity6 extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-                // TODO Auto-generated method stub
 
             }
 
@@ -77,19 +77,20 @@ public class MainActivity6 extends AppCompatActivity {
 
 
                 if(minimumPassword(s.toString() ) && b==false){
-                    simpleProgressBar.setProgress(100);
+                    simpleProgressBar.setProgressTintList(ColorStateList.valueOf(Color.YELLOW));
                     passwordStrength.setText("Password Strength: Medium");
-                }
-                else if ( b==true && minimumPassword(s.toString())){
-                    simpleProgressBar.setProgress(1);
+                } else if (b == true && minimumPassword(s.toString())) {
+                    simpleProgressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
                     passwordStrength.setText("Password Strength: Strong");
-                }else{
-                    simpleProgressBar.setProgress(0);
+                } else {
+                    simpleProgressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
                     passwordStrength.setText("Password Strength: Weak");
 
                 }
             }
         });
+        inputUPass.setText(intent.getStringExtra("pass"));
+
     }
     public boolean minimumPassword(String pass) {
         ArrayList<Character> chars = new ArrayList<Character>();
@@ -127,8 +128,12 @@ public class MainActivity6 extends AppCompatActivity {
         String theUPass = inputUPass.getText().toString();
 
         if (ifEmpty(theUrl, theId, theUPass) == false) {
+            Context context = getApplicationContext();
+            Toast.makeText(context, "Encrypting...",
+                    Toast.LENGTH_SHORT).show();
             FireBaseDB entry = new FireBaseDB(theUrl, theId, theUPass, master);
             entry.createNewWebsitePassword();
+
             //User test = new User(theUrl, theId, theUPass);
             // list.add(test);
             submit(view);
@@ -137,10 +142,8 @@ public class MainActivity6 extends AppCompatActivity {
     }
 
     public boolean ifEmpty(String url, String id, String pass) {
-        if (url.isEmpty() || url.contains(" ") || id.isEmpty() || id.contains(" ") || pass.isEmpty() || pass.contains(" ")) { //you need to change this so that it also rejects it if it only has whitespace(spaces)
-            return true;
-        } else
-            return false;
+        //you need to change this so that it also rejects it if it only has whitespace(spaces)
+        return url.isEmpty() || url.contains(" ") || id.isEmpty() || id.contains(" ") || pass.isEmpty() || pass.contains(" ");
     }
 
 
@@ -154,7 +157,12 @@ public class MainActivity6 extends AppCompatActivity {
             int randomIndex = random.nextInt(chars.length());
             sb.append(chars.charAt(randomIndex));
         }
-        return sb.toString();
+        Random rand = new Random(); //instance of random class
+        int upperbound = 10;
+        //generate random values from 0-9
+        int int_random = rand.nextInt(upperbound);
+
+        return int_random + sb.toString() + "@";
     }
 
     public void generatePassword(View view) {

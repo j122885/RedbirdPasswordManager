@@ -2,25 +2,19 @@ package com.example.redbird;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.fingerprint.FingerprintManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,8 +40,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -58,7 +50,6 @@ import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 import javax.crypto.Cipher;
@@ -67,11 +58,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import io.ipfs.api.IPFS;
-import io.ipfs.api.MerkleNode;
-import io.ipfs.api.NamedStreamable;
-
-//v1.0
+//v1.1
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -97,9 +84,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private KeyguardManager keyguardManager;
     private KeyStore keyStore;
     private Cipher cipher;
-    private String KEY_NAME = "AndroidKey";
+    private final String KEY_NAME = "AndroidKey";
     private int attempts = 0;
-    private long time = 0;
+    private final long time = 0;
     private TextView timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +94,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         rUser = findViewById(R.id.rUser);
         rPass = findViewById(R.id.rPass);
-        registerSwitch = (ToggleButton) findViewById(R.id.registerSwitch);
+        registerSwitch = findViewById(R.id.registerSwitch);
         registerSwitch.setBackgroundColor(Color.parseColor("#FF1E1C1C"));//initially sets background to gray or enabled
-        loginSwitch = (ToggleButton) findViewById(R.id.loginSwitch);
+        loginSwitch = findViewById(R.id.loginSwitch);
         loginSwitch.setBackgroundColor(Color.parseColor("#0C0C0C"));//initially sets background to black or disabled
-        registerButton = (Button) findViewById(R.id.registerButton);
-        loginButton = (Button) findViewById(R.id.loginButton);
+        registerButton = findViewById(R.id.registerButton);
+        loginButton = findViewById(R.id.loginButton);
         loginButton.setVisibility(View.INVISIBLE);
         error = findViewById(R.id.errorMessage);
         //error.setVisibility(View.INVISIBLE);
@@ -330,8 +317,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void changeToLogin(View view) {
         registerSwitch.setBackgroundColor(Color.parseColor("#0C0C0C"));
-        registerButton.setVisibility(view.INVISIBLE);
-        loginButton.setVisibility(view.VISIBLE);
+        registerButton.setVisibility(View.INVISIBLE);
+        loginButton.setVisibility(View.VISIBLE);
         loginSwitch.setBackgroundColor(Color.parseColor("#FF1E1C1C"));
 
     }
@@ -339,8 +326,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void changeToRegister(View view) {
         registerSwitch.setBackgroundColor(Color.parseColor("#FF1E1C1C"));
-        registerButton.setVisibility(view.VISIBLE);
-        loginButton.setVisibility(view.INVISIBLE);
+        registerButton.setVisibility(View.VISIBLE);
+        loginButton.setVisibility(View.INVISIBLE);
         loginSwitch.setBackgroundColor(Color.parseColor("#0C0C0C"));
 
     }

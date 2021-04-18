@@ -26,15 +26,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
 //Grace
@@ -44,7 +36,7 @@ public class MainActivity2 extends AppCompatActivity {
     TextView tv;
     TextView tv1;
     TextView tv2;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
+    private final DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
     private String website;
     private String username;
     private  String websiteUserName;
@@ -156,11 +148,13 @@ public void edit(View view){
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Log.d("File", " did not delete" );
+                Log.d("File", " did not delete");
             }
         });
         Intent intent = new Intent(this, MainActivity3.class);
         intent.putExtra("username", username);
+        intent.putExtra("masterPass", master);
+
         startActivity(intent);
 
     }

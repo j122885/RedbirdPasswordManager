@@ -28,7 +28,7 @@
         android:id="@+id/textView22"
         android:layout_width="match_parent"
         android:layout_height="41dp"
-        android:text="Are you sure you want to reset your account?"
+        android:text="Are you sure you want to delete your account?"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,7 @@
         android:id="@+id/deleteTextview"
         android:layout_width="match_parent"
         android:layout_height="41dp"
-        android:text='Type "reset" below to confirm:'
+        android:text='Type "delete" below to confirm:'
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +75,7 @@
             android:id="@+id/deleteButton"
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:text="reset" />
+            android:text="delete" />
     </LinearLayout>
 
 </LinearLayout>
