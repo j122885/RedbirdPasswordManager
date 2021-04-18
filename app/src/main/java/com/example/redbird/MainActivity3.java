@@ -3,9 +3,7 @@ package com.example.redbird;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,18 +15,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,20 +33,21 @@ import javax.crypto.spec.IvParameterSpec;
 
 
 public class MainActivity3 extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    ArrayList<User> users = new ArrayList<User>();
-
+    private final ArrayList<User> users = new ArrayList<User>();
     private String master;
     private String pass;
     private String username;
     private String salt;
-   public static IvParameterSpec iv;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
+    public static IvParameterSpec iv;
+    private final DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://redbird-password-manger-default-rtdb.firebaseio.com/").getReference();
     static boolean refresh = false;
     private long mLastClickTime = 0;
     private long rLastClickTime = 0;
     private long oLastClickTime = 0;
-    HashMap<String, String> nameAddresses;
-    List<HashMap<String, String>> listItems;
+    private String search;
+    private HashMap<String, String> nameAddresses;
+    private List<HashMap<String, String>> listItems;
+    private SimpleAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +69,9 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                 String username = null;
                 String password = null;
                 String salt = null;
-                //IvParameterSpec iv = null;
 
-                //if (isNotNull(children)==true) {
+
+
                     for (DataSnapshot it : children) {
                         DataSnapshot i = it;
                         try {
@@ -118,8 +112,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                     }
                     ListView resultsListView = findViewById(R.id.results_listview);
                     resultsListView.setOnItemClickListener((AdapterView.OnItemClickListener) them);
-                    //Toolbar toolbar = findViewById(R.id.toolbar);
-                    //setSupportActionBar(toolbar);
+
 
                     nameAddresses = new HashMap<>();
 
@@ -130,9 +123,9 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                     }
 
                     listItems = new ArrayList<>();
-                    SimpleAdapter adapter = new SimpleAdapter(them, listItems, R.layout.list_item,
-                            new String[]{"First Line", "Second Line"},
-                            new int[]{R.id.text1, R.id.text2});
+                adapter = new SimpleAdapter(them, listItems, R.layout.list_item,
+                        new String[]{"First Line", "Second Line"},
+                        new int[]{R.id.text1, R.id.text2});
 
                     Iterator it = nameAddresses.entrySet().iterator();
                     while (it.hasNext()) {
@@ -147,7 +140,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                         }
                     }
                     resultsListView.setAdapter(adapter);
-             //   }
+
             }
 
             @Override
@@ -187,13 +180,40 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
 
                 return false;
             }
-            if(i.child("password").getValue().toString().equals(null)){
+            if (i.child("password").getValue().toString().equals(null)) {
                 System.out.println("Website is null");
 
                 return false;
             }
         }
         return true;
+    }
+
+    public void search(String input) {
+        ListView resultsListView = findViewById(R.id.results_listview);
+        resultsListView.setOnItemClickListener((AdapterView.OnItemClickListener) this);
+        int position = 0;
+        boolean flag = false;
+        List<HashMap<String, String>> orderedItems = new ArrayList<>();
+        for (HashMap<String, String> i : listItems) {
+            if (flag == false) {
+                position++;
+            }
+            if (i.get("First Line").equalsIgnoreCase(input)) {
+                orderedItems.add(i);
+                flag = true;
+            }
+        }
+        if (flag == true) {
+            listItems.remove(position - 1);
+
+            listItems.add(0, orderedItems.get(0));
+            adapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(MainActivity3.this, "No results found", Toast.LENGTH_LONG).show();
+
+        }
+
     }
 
     //Intent for the listview(makes any listitem "clickable"
@@ -216,7 +236,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
             if (u.website.equals(listItems.get(position).get("First Line"))) {
                 pass = u.uPass;
                 salt = u.salt;
-             //   iv = u.iv;
+
 
                 //Log.d("Testing", "Iv signature is " + iv.toString());
 
@@ -232,6 +252,12 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
     //Used for the toolbar that I created,(I deleted the action bar to make it more easier to add icons)
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        try {
+            getSupportActionBar().setTitle(null);
+        } catch (NullPointerException e) {
+        }
+
+
         return true;
     }
 
@@ -268,7 +294,10 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
 
                 create();
                 break;
-
+            case R.id.app_bar_search:
+                msg = "Search";
+                showAlertDialog();
+                break;
         }
         Toast.makeText(MainActivity3.this, msg + "  Pressed", Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
@@ -284,6 +313,21 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
+    public void showAlertDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        SearchFragment alertDialog = SearchFragment.newInstance("Search");
+        alertDialog.setCancelable(true);
+        alertDialog.show(fm, "fragment_alert");
+        alertDialog.setDialogResult(new SearchFragment.OnMyDialogResult() {
+            public void finish(String result) {
+                if (result.isEmpty() || result.equals(null)) {
+
+                } else {
+                    search(result);
+                }
+            }
+        });
+    }
 
     public void submit() throws Exception {
 

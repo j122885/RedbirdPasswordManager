@@ -18,7 +18,10 @@
         <activity android:name=".MasterActivity" />
         <activity android:name=".PasswordResetActivity" />
         <activity android:name=".MainActivity4" />
-        <activity android:name=".MainActivity3" />
+        <activity android:name=".MainActivity3">
+
+        </activity>
+
         <activity android:name=".MainActivity2" />
         <activity android:name=".TransitionActivity" />
         <activity android:name=".MainActivity">

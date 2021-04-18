@@ -58,7 +58,7 @@ public class ResetAccountFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         // Get field from view
         cancelButton = view.findViewById(R.id.cancelButton);
-        deleteButton = view.findViewById(R.id.deleteButton);
+        deleteButton = view.findViewById(R.id.searchButton);
         confirm = view.findViewById(R.id.confirmField);
         // Fetch arguments from bundle and set title
         String title = getArguments().getString("title", "Enter Name");
