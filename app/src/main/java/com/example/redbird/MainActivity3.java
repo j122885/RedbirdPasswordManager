@@ -253,7 +253,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         try {
-            getSupportActionBar().setTitle(null);
+            getSupportActionBar().setTitle("Redbird PM");
         } catch (NullPointerException e) {
         }
 
