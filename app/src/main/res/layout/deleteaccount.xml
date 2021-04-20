@@ -5,7 +5,7 @@
     style="@style/ActivityDialog"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#3C3F41"
+    android:background="#000000"
     android:backgroundTint="#000000"
     android:orientation="vertical"
     tools:context=".MasterLoginActivity">
@@ -68,7 +68,7 @@
 
         <Button
             android:id="@+id/cancelButton"
-            android:layout_width="190dp"
+            android:layout_width="184dp"
             android:layout_height="match_parent"
             android:text="Cancel" />
 

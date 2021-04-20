@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="#2CFFFFFF"
     android:backgroundTint="#2CFFFFFF"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="2dp">
 
 
     <TextView
@@ -24,13 +25,6 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    androidx.appcompat.widget.Toolbar
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#040100"
-    android:minHeight="?attr/actionBarSize"
-    android:id="@id/toolbar"/>
-
 
     <TextView
         android:id="@+id/text2"
@@ -42,6 +36,7 @@
         android:background="#2C2F2B"
         android:backgroundTint="#2C2F2B"
         android:lineSpacingExtra="8sp"
+        android:paddingEnd="20dp"
         android:textColor="#fdf5f5"
         android:textSize="18sp"
         android:textStyle="normal" />

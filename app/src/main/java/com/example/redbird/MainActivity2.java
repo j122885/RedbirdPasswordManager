@@ -1,6 +1,5 @@
 package com.example.redbird;
 
-import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -10,6 +9,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,12 +55,16 @@ public class MainActivity2 extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity2_main);
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("ProgressDialog");
-        progressDialog.setMessage("Loading...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        ProgressBar progressBar = new ProgressBar(this);
+        ProgressBar pgsBar = findViewById(R.id.pBar);
+        pgsBar.setVisibility(View.VISIBLE);
+
+//        ProgressDialog progressDialog = new ProgressDialog(this);
+//        progressDialog.setTitle(null);
+//        progressDialog.setMessage("Loading...");
+//        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        progressDialog.setCancelable(false);
+//        progressDialog.show();
 
 
         Intent intent = getIntent(); //get the intent
@@ -70,7 +74,7 @@ public class MainActivity2 extends AppCompatActivity {
         website = intent.getStringExtra("website");
         websiteUserName = intent.getStringExtra("user");//for the specific list item you click on
 
-         mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
          user = mAuth.getCurrentUser();
          storage = FirebaseStorage.getInstance();
          storageRef = storage.getReference();
@@ -106,7 +110,9 @@ public class MainActivity2 extends AppCompatActivity {
                 tv.setText(website);//calling parts
                 tv1.setText(websiteUserName);
                 tv2.setText(pass);
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                pgsBar.setVisibility(View.INVISIBLE);
+
             }
 
         }).addOnFailureListener(new OnFailureListener() {
