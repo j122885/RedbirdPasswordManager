@@ -73,7 +73,6 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="208dp"
         android:text="Password"
         android:textColor="#FBF8F8"
         android:textSize="20dp"
@@ -82,8 +81,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.717" />
 
     <TextView
         android:id="@+id/textView7"
@@ -140,18 +139,16 @@
         android:id="@+id/pass"
         android:layout_width="wrap_content"
         android:layout_height="33dp"
-        android:layout_marginTop="536dp"
-        android:layout_marginBottom="162dp"
         android:scrollbars="horizontal"
         android:scrollHorizontally="true"
         android:textColor="#FDFDFD"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.787" />
 
     <ImageView
         android:id="@+id/imageView"
